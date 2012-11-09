@@ -161,6 +161,7 @@ public class DesignPanelBase extends JPanel {
 	
 	protected Component hg6;
 	//GitHub deneme
+	//Deneme2...
 	/*******************************************************************************/
 	public DesignPanelBase() {
 		setOpaque(false);
