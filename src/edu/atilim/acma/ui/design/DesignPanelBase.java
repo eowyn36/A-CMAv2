@@ -160,7 +160,7 @@ public class DesignPanelBase extends JPanel {
 	protected JButton psbtnaddtask;
 	
 	protected Component hg6;
-	
+	//GitHub deneme
 	/*******************************************************************************/
 	public DesignPanelBase() {
 		setOpaque(false);
