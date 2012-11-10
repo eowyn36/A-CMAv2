@@ -532,84 +532,84 @@ public class DesignPanelBase extends JPanel {
 		actionsPanel.setLayout(new BorderLayout(0, 0));
 		
 /************************************************************************************************************/		
-		particalswarmpanel = new JPanel();
-		particalswarmpanel.setBorder(new EmptyBorder(5, 5, 5, 5));							//Yanlardan boþluk býrakýyor
-		particalswarmpanel.setOpaque(false);													//Arka rengi beyaz yapýyor
-		algorithmsTabPane.addTab("Particle Swarm", null, particalswarmpanel, null);			//Tab'ý oluþturuyor
-		particalswarmpanel.setLayout(new BoxLayout(particalswarmpanel, BoxLayout.X_AXIS));	//Düzeni bozuyor.Hepsini ortalýyor	
+		 particalswarmpanel = new JPanel();
+		 particalswarmpanel.setBorder(new EmptyBorder(5, 5, 5, 5));							//Yanlardan boþluk býrakýyor
+		 particalswarmpanel.setOpaque(false);													//Arka rengi beyaz yapýyor
+		 algorithmsTabPane.addTab("Particle Swarm", null, particalswarmpanel, null);			//Tab'ý oluþturuyor
+		 particalswarmpanel.setLayout(new BoxLayout(particalswarmpanel, BoxLayout.X_AXIS));	//Düzeni bozuyor.Hepsini ortalýyor	
 		
-		lbliteration = new JLabel("Iteration:");										//restart count label'ý ismi
-		particalswarmpanel.add(lbliteration);												//restart count label'ý	koyuyor
+	 	 lbliteration = new JLabel("Iteration:");										//restart count label'ý ismi
+		 particalswarmpanel.add(lbliteration);												//restart count label'ý	koyuyor
 		
-		hs15 = Box.createHorizontalStrut(5);													
-		particalswarmpanel.add(hs15);															
+		 hs15 = Box.createHorizontalStrut(5);													
+		 particalswarmpanel.add(hs15);															
 		
-		psiteration = new JSpinner();
-		psiteration.setModel(new SpinnerNumberModel(50, -1, 100, 1));
-		particalswarmpanel.add(psiteration);
+		 psiteration = new JSpinner();
+		 psiteration.setModel(new SpinnerNumberModel(50, -1, 100, 1));
+		 particalswarmpanel.add(psiteration);
 		
 		
 		
-		lblAc1=new JLabel(" AC1:");
-		particalswarmpanel.add(lblAc1);
+		 lblAc1=new JLabel(" AC1:");
+		 particalswarmpanel.add(lblAc1);
 		
-		hs16 = Box.createHorizontalStrut(5);													
-		particalswarmpanel.add(hs16);	
+		 hs16 = Box.createHorizontalStrut(5);													
+		 particalswarmpanel.add(hs16);	
 		
-		psAc1 = new JSpinner();
-		psAc1.setModel(new SpinnerNumberModel(2.05, -1, 100, 1));
-		particalswarmpanel.add(psAc1);
+		 psAc1 = new JSpinner();
+		 psAc1.setModel(new SpinnerNumberModel(2.05, -1, 100, 1));
+		 particalswarmpanel.add(psAc1);
 
 		
 		
-		lblAc2=new JLabel(" AC2:");
-		particalswarmpanel.add(lblAc2);
+		 lblAc2=new JLabel(" AC2:");
+		 particalswarmpanel.add(lblAc2);
 		
-		hs17 = Box.createHorizontalStrut(5);													
-		particalswarmpanel.add(hs17);	
+		 hs17 = Box.createHorizontalStrut(5);													
+		 particalswarmpanel.add(hs17);	
 		
-		psAc2 = new JSpinner();
-		psAc2.setModel(new SpinnerNumberModel(2.05, -1, 100, 1));
-		particalswarmpanel.add(psAc2);
+		 psAc2 = new JSpinner();
+		 psAc2.setModel(new SpinnerNumberModel(2.05, -1, 100, 1));
+		 particalswarmpanel.add(psAc2);
 
 		
 		
-		lblVmax=new JLabel(" Vmax:");
-		particalswarmpanel.add(lblVmax);
+		 lblVmax=new JLabel(" Vmax:");
+		 particalswarmpanel.add(lblVmax);
 		
-		hs18 = Box.createHorizontalStrut(5);													
-		particalswarmpanel.add(hs18);	
+		 hs18 = Box.createHorizontalStrut(5);													
+		 particalswarmpanel.add(hs18);	
 		
-		psVmax = new JSpinner();
-		psVmax.setModel(new SpinnerNumberModel(30, -1, 100, 1));
-		particalswarmpanel.add(psVmax);		
+		 psVmax = new JSpinner();
+		 psVmax.setModel(new SpinnerNumberModel(30, -1, 100, 1));
+		 particalswarmpanel.add(psVmax);		
 
 		
 		
-		lblVmin=new JLabel(" Vmin:");
-		particalswarmpanel.add(lblVmin);
+		 lblVmin=new JLabel(" Vmin:");
+		 particalswarmpanel.add(lblVmin);
 		
-		hs19 = Box.createHorizontalStrut(5);													
-		particalswarmpanel.add(hs19);	
+		 hs19 = Box.createHorizontalStrut(5);													
+		 particalswarmpanel.add(hs19);	
 		
-		psVmin = new JSpinner();
-		psVmin.setModel(new SpinnerNumberModel(10, -1, 100, 1));
-		particalswarmpanel.add(psVmin);		
-		
-		
-		hg6 = Box.createHorizontalGlue();		//Boþluk oluþturuyor
-		particalswarmpanel.add(hg6);           
+		 psVmin = new JSpinner();
+		 psVmin.setModel(new SpinnerNumberModel(10, -1, 100, 1));
+		 particalswarmpanel.add(psVmin);		
 		
 		
-		psbtnstart = new JButton("Start");
-		psbtnstart.setActionCommand("PS");
-		psbtnstart.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/next_16.png")));
-		particalswarmpanel.add(psbtnstart);
+		 hg6 = Box.createHorizontalGlue();		//Boþluk oluþturuyor
+		 particalswarmpanel.add(hg6);           
 		
-		psbtnaddtask = new JButton("Add Task");
-		psbtnaddtask.setActionCommand("PS");
-		psbtnaddtask.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/save_16.png")));
-		particalswarmpanel.add(psbtnaddtask);
+		
+	 	 psbtnstart = new JButton("Start");
+		 psbtnstart.setActionCommand("PS");
+		 psbtnstart.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/next_16.png")));
+		 particalswarmpanel.add(psbtnstart);
+		
+		 psbtnaddtask = new JButton("Add Task");
+		 psbtnaddtask.setActionCommand("PS");
+		 psbtnaddtask.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/save_16.png")));
+		 particalswarmpanel.add(psbtnaddtask);
 		
 		
 		
