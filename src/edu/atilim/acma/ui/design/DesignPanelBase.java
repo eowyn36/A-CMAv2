@@ -135,34 +135,31 @@ public class DesignPanelBase extends JPanel {
 	protected JCheckBox abcParallel;
 	protected Component horizontalStrut_2;
 	/*******************************************************************************/
-	protected JPanel particalswarmpanel;
-	protected JLabel lbliteration;
-	protected JSpinner psiteration;
-	protected Component hs15;
+	 protected JPanel particalswarmpanel;
+	 protected JLabel lbliteration;
+	 protected JSpinner psiteration;
+	 protected Component hs15;
 	
-	protected JLabel lblAc1;
-	protected JSpinner psAc1;
-	protected Component hs16;
+	 protected JLabel lblAc1;
+	 protected JSpinner psAc1;
+	 protected Component hs16;
 	
-	protected JLabel lblAc2;
-	protected JSpinner psAc2;
-	protected Component hs17;
+	 protected JLabel lblAc2;
+	 protected JSpinner psAc2;
+	 protected Component hs17;
 	
-	protected JLabel lblVmax;
-	protected JSpinner psVmax;
-	protected Component hs18;
+	 protected JLabel lblVmax;
+	 protected JSpinner psVmax;
+	 protected Component hs18;
 	
-	protected JLabel lblVmin;
-	protected JSpinner psVmin;
-	protected Component hs19;
+	 protected JLabel lblVmin;
+	 protected JSpinner psVmin;
+	 protected Component hs19;
 	
-	protected JButton psbtnstart;
-	protected JButton psbtnaddtask;
+	 protected JButton psbtnstart;
+	 protected JButton psbtnaddtask;
 	
-	protected Component hg6;
-	//GitHub deneme
-	//Deneme2...
-	//Deneme devam...
+	 protected Component hg6;
 	/*******************************************************************************/
 	public DesignPanelBase() {
 		setOpaque(false);
