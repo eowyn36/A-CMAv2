@@ -116,6 +116,12 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 					int mt = (Integer)abcMaxTrials.getValue();
 					int pc = (Integer)abcPopSize.getValue();
 					algo = new BeeColonyAlgorithm(new SolutionDesign(design, getRunConfig()), null, mt, pc, mi);
+				} 
+				else if (e.getActionCommand().equals("PS"))
+				{
+					
+					
+					
 				}
 				
 				
