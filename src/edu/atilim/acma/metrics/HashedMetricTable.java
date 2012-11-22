@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-class HashedMetricTable implements MetricTable {
+public class HashedMetricTable implements MetricTable {// made public by nly
 	private HashMap<String, HashMap<String, Double>> metrics;
 	
 	public HashedMetricTable() {

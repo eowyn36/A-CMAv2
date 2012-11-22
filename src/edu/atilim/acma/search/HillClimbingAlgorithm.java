@@ -1,5 +1,12 @@
 package edu.atilim.acma.search;
 
+import java.util.HashMap;
+import java.util.List;
+
+import edu.atilim.acma.metrics.HashedMetricTable;
+import edu.atilim.acma.metrics.MetricCalculator;
+import edu.atilim.acma.metrics.MetricTable;
+
 public class HillClimbingAlgorithm extends AbstractAlgorithm {
 	public HillClimbingAlgorithm(SolutionDesign initialDesign,
 			AlgorithmObserver observer) {
@@ -66,6 +73,20 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 		//	bestNeighbor = current.getBestNeighbor();
 		//else
 		//	bestNeighbor = current.getBetterNeighbor();
+		
+		MetricTable table = new HashedMetricTable();
+		//HashMap<String, HashMap<String, Double>> metrics yapýsýndaki ilk String okulda sandigimiz gibi metric grubunun ismi deilde class ismi
+		table = MetricCalculator.calculate(current.getDesign(), current.getConfig());//table metriclerin degerleriyle dolduruldu.
+		List<String> classNames = table.getRows();//burda classisimlerini liste olarak aldik.
+		Object key;
+		Double numberOfOperations;
+		
+		for (String cName : classNames) {
+			key = cName;//table.get() ilk degisken olarak String deildi object aldigi icin classismini object olarak kaydettik.
+			numberOfOperations = table.get(key, "numOps");//verdigimiz class isminin numOps degerini aldik.
+			System.out.println(cName + ": numOps: "+ numberOfOperations);//burda ilk ekrana yazilan degerler Design Panelde yazan degerlere esit
+																		// ilk current initial design'in kendisi oldugu icin.
+		}
 		
 		bestNeighbor = current.getBestNeighbor();
 		
