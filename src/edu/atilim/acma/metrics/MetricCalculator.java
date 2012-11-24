@@ -75,6 +75,17 @@ public class MetricCalculator {
 		return MetricNormalizer.normalize(table.getSummary(), config);
 	}
 	
+	public static ArrayList<Double> getAverages(MetricTable table){
+		ArrayList<Double> averages = new ArrayList<Double>();
+		List<MetricRegistry.Entry> metrics = MetricRegistry.entries();
+		for (MetricRegistry.Entry entry : metrics) {
+			averages.add(table.getAverage(entry.getName()));
+			System.out.println(entry.getName() + ":  " + table.getAverage(entry.getName()));
+		}
+		return averages;
+	}
+	
+	
 	public static MetricTable calculate(Design d) {
 		return calculate(d, RunConfig.getDefault());
 	}

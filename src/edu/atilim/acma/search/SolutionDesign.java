@@ -65,6 +65,12 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 		return score;
 	}
 	
+	public double getEuclidianDistance(){
+		double distance = 0;
+		ArrayList<Double> averages = MetricCalculator.getAverages(MetricCalculator.calculate(getDesign(), config));
+		return distance;
+	}
+	
 	public MetricSummary getMetricSummary() {
 		return MetricCalculator.calculate(getDesign(), config).getSummary();
 	}

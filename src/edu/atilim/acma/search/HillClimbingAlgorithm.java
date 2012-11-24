@@ -19,7 +19,7 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 	private SolutionDesign best;
 	
 	private int numRestarts = 0;
-	private int restartCount = 10;			//bunu 1 yap
+	private int restartCount = 1;			//bunu 1 yap
 	private int restartDepth = 100;
 	
 	public int getRestartCount() {
@@ -65,7 +65,7 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 	@Override
 	public boolean step() {
 		AlgorithmObserver observer = getObserver();
-		
+		current.getEuclidianDistance();
 		log("Starting iteration %d. Current score: %.6f, Best score: %.6f", getStepCount(), current.getScore(), best.getScore());
 		SolutionDesign bestNeighbor = null;
 		
@@ -73,7 +73,7 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 		//	bestNeighbor = current.getBestNeighbor();
 		//else
 		//	bestNeighbor = current.getBetterNeighbor();
-		
+		/*
 		MetricTable table = new HashedMetricTable();
 		//HashMap<String, HashMap<String, Double>> metrics yapýsýndaki ilk String okulda sandigimiz gibi metric grubunun ismi deilde class ismi
 		table = MetricCalculator.calculate(current.getDesign(), current.getConfig());//table metriclerin degerleriyle dolduruldu.
@@ -87,6 +87,7 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 			System.out.println(cName + ": numOps: "+ numberOfOperations);//burda ilk ekrana yazilan degerler Design Panelde yazan degerlere esit
 																		// ilk current initial design'in kendisi oldugu icin.
 		}
+		*/
 		
 		bestNeighbor = current.getBestNeighbor();
 		
