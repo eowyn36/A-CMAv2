@@ -67,7 +67,11 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 	
 	public double getEuclidianDistance(){
 		double distance = 0;
+		ArrayList<Double> goalforMosaic = new ArrayList<Double>();
+		double[] goalMosaic = new double[]{0.0, 0.0, 0.0, 0.0};
 		ArrayList<Double> averages = MetricCalculator.getAverages(MetricCalculator.calculate(getDesign(), config));
+		//TODO calculate distance
+		
 		return distance;
 	}
 	
@@ -83,6 +87,21 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 		return this;
 	}
 		
+	public SolutionDesign getClosestNeighbor(){
+	SolutionDesign best = this;
+	for(SolutionDesign sd: this){ // Bu nasýl bi döngüdür anlamadým bende ama o da öyle yazmýþ diye kopyaladým :)
+		if(sd.isCloserThan(best))
+			best = sd;
+	}	
+	return best;
+	}
+	
+	public Boolean isCloserThan(SolutionDesign o) {	
+		if((Double.compare(o.getEuclidianDistance(), getEuclidianDistance())) > 0 )
+			return true;
+		return false;
+	}
+
 	public SolutionDesign getBestNeighbor() {
 		SolutionDesign best = this;
 		
