@@ -64,9 +64,10 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 
 	@Override
 	public boolean step() {
+		//Eclidian Distance version
 		AlgorithmObserver observer = getObserver();
 		current.getEuclidianDistance();
-		log("Starting iteration %d. Current score: %.6f, Best score: %.6f", getStepCount(), current.getScore(), best.getScore());
+		log("Starting iteration %d. Current distance: %.6f, Closest distance: %.6f", getStepCount(), current.getEuclidianDistance(), best.getEuclidianDistance());
 		SolutionDesign bestNeighbor = null;
 		
 		//if (restartCount == 0)
@@ -89,11 +90,11 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 		}
 		*/
 		
-		bestNeighbor = current.getBestNeighbor();
+		bestNeighbor = current.getClosestNeighbor();
 		
-		log("Found neighbor with score %.6f score", bestNeighbor.getScore());
+		log("Found neighbor with distance %.6f", bestNeighbor.getEuclidianDistance());
 		
-		if (bestNeighbor.isBetterThan(best)) {
+		if (bestNeighbor.isCloserThan(best)) {
 			best = bestNeighbor;
 			
 			if (observer != null) {
@@ -116,7 +117,7 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 				if (observer != null)
 					observer.onAdvance(this, numRestarts, restartCount + 1);
 			} else {
-				log("Algorithm finished, the final design score: %.6f", best.getScore());
+				log("Algorithm finished, the final design's distance to goal is: %.6f", best.getEuclidianDistance());
 				finalDesign = best;
 				return true;
 			}

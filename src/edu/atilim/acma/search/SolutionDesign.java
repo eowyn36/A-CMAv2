@@ -66,13 +66,20 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 	}
 	
 	public double getEuclidianDistance(){
-		double distance = 0;
 		ArrayList<Double> goalforMosaic = new ArrayList<Double>();
-		double[] goalMosaic = new double[]{0.0, 0.0, 0.0, 0.0};
+		double[] goalMosaic = new double[]{0.5, 0.0, 0.0, 0.0, 2.5, 1.1, 0.0, 5.5, 0.0, 3.1, 0.05, 4.5, 3.2, 0.0, 25, 1.2, 1.3, 4.1, 2.5, 4.3, 0.5, 0.0, 1.3, 0.1, 0.7, 0.0};
+		for(int i=0; i<26; i++)
+			goalforMosaic.add(goalMosaic[i]);
 		ArrayList<Double> averages = MetricCalculator.getAverages(MetricCalculator.calculate(getDesign(), config));
-		//TODO calculate distance
-		
-		return distance;
+		return  calculateEuclidianDistance(averages, goalforMosaic);
+	}
+	
+	public double calculateEuclidianDistance(ArrayList<Double> averages, ArrayList<Double> goal){
+		double sum = 0;
+		for(int i=0; i<averages.size(); i++){
+			sum += Math.pow((averages.get(i) - goal.get(i)), 2);
+		}
+		return Math.sqrt(sum);
 	}
 	
 	public MetricSummary getMetricSummary() {
