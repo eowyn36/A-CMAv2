@@ -1,18 +1,18 @@
 package edu.atilim.acma.search;
 
-public class HillClimbingAlgorithm extends AbstractAlgorithm {
-	public HillClimbingAlgorithm(SolutionDesign initialDesign,
-			AlgorithmObserver observer) {
+public class HillClimbingForPSO extends AbstractAlgorithm {
+	public HillClimbingForPSO(SolutionDesign initialDesign, SolutionDesign goal, AlgorithmObserver observer) {
 		super(initialDesign, observer);
-		
+		this.goal = goal;
 		current = best = initialDesign;
 	}
 
 	private SolutionDesign current;
 	private SolutionDesign best;
+	private SolutionDesign goal;
 	
 	private int numRestarts = 0;
-	private int restartCount = 10;
+	private int restartCount = 1;
 	private int restartDepth = 100;
 	
 	public int getRestartCount() {
@@ -58,20 +58,15 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 	@Override
 	public boolean step() {
 		AlgorithmObserver observer = getObserver();
-		
-		log("Starting iteration %d. Current score: %.6f, Best score: %.6f", getStepCount(), current.getScore(), best.getScore());
+		current.getEuclidianDistance(goal);
+		log("Starting iteration %d. Current distance: %.6f, Closest distance: %.6f", getStepCount(), current.getEuclidianDistance(goal), best.getEuclidianDistance(goal));
 		SolutionDesign bestNeighbor = null;
 		
-		//if (restartCount == 0)
-		//	bestNeighbor = current.getBestNeighbor();
-		//else
-		//	bestNeighbor = current.getBetterNeighbor();
+		bestNeighbor = current.getClosestNeighbor(goal);
 		
-		bestNeighbor = current.getBestNeighbor();
+		log("Found neighbor with distance %.6f", bestNeighbor.getEuclidianDistance(goal));
 		
-		log("Found neighbor with score %.6f score", bestNeighbor.getScore());
-		
-		if (bestNeighbor.isBetterThan(best)) {
+		if (bestNeighbor.isCloserThan(best, goal)) {
 			best = bestNeighbor;
 			
 			if (observer != null) {
@@ -94,7 +89,7 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 				if (observer != null)
 					observer.onAdvance(this, numRestarts, restartCount + 1);
 			} else {
-				log("Algorithm finished, the final design score: %.6f", best.getScore());
+				log("Algorithm finished, the final design's distance to goal is: %.6f", best.getEuclidianDistance(goal));
 				finalDesign = best;
 				return true;
 			}

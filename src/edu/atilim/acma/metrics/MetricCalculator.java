@@ -2,6 +2,7 @@ package edu.atilim.acma.metrics;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import edu.atilim.acma.RunConfig;
@@ -74,17 +75,13 @@ public class MetricCalculator {
 	public static double normalize(MetricTable table, RunConfig config) {
 		return MetricNormalizer.normalize(table.getSummary(), config);
 	}
-	
-	public static ArrayList<Double> getAverages(MetricTable table){
-		ArrayList<Double> averages = new ArrayList<Double>();
-		List<MetricRegistry.Entry> metrics = MetricRegistry.entries();
-		for (MetricRegistry.Entry entry : metrics) {
-			averages.add(table.getAverage(entry.getName()));
-			System.out.println(entry.getName() + ":  " + table.getAverage(entry.getName()));
-		}
-		return averages;
+	public static HashMap<String, Double> normalizeEach(MetricTable table){
+		return normalizeEach(table, RunConfig.getDefault());
 	}
 	
+	public static HashMap<String, Double> normalizeEach(MetricTable table, RunConfig config) {
+		return MetricNormalizer.normalizeEach(table.getSummary(), config);
+	}	
 	
 	public static MetricTable calculate(Design d) {
 		return calculate(d, RunConfig.getDefault());
