@@ -3,6 +3,7 @@ package edu.atilim.acma.search;
 import edu.atilim.acma.util.Log;
 
 public abstract class AbstractAlgorithm {
+
 	public static final int STATE_NEW = 0;
 	public static final int STATE_RUNNING = 1;
 	public static final int STATE_PAUSED = 2;

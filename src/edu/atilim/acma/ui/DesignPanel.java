@@ -55,6 +55,10 @@ import edu.atilim.acma.search.ConcurrentRandomSearch;
 import edu.atilim.acma.search.ConcurrentSimAnn;
 import edu.atilim.acma.search.ConcurrentStochasticBeamSearch;
 import edu.atilim.acma.search.HillClimbingAlgorithm;
+import edu.atilim.acma.search.FirstChoiceHCForPSO;
+import edu.atilim.acma.search.HillClimbingForPSO;
+import edu.atilim.acma.search.PSOAlgorithm;
+import edu.atilim.acma.search.StochasticHCForPSO;
 import edu.atilim.acma.search.RandomSearchAlgorithm;
 import edu.atilim.acma.search.SimAnnAlgorithm;
 import edu.atilim.acma.search.SolutionDesign;
@@ -70,147 +74,198 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 
 	private Design design;
 	private DesignData designData;
-	
+
 	DesignPanel(Design design) {
 		this.design = design;
 		this.designData = new DesignData();
-		
+
 		MainWindow.getInstance().addEventListener(this);
-		
+
 		initPossibleActions();
 		initAppliedActions();
 		initMetrics();
 		initConfigSelector();
 		initRunButtons();
-		
+
 		validateDesignData();
 	}
-	
+
 	public void setCompactView(boolean cv) {
 		configPanel.setVisible(!cv);
 		algorithmsPanel.setVisible(!cv);
 	}
-	
+
 	private void initRunButtons() {
 		ActionListener algoListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				AbstractAlgorithm algo = null;
-				
+
 				if (e.getActionCommand().equals("HC")) {
-					int rc = (Integer)hcRestartCount.getValue();
-					int rd = (Integer)hcRestartDepth.getValue();
-					
-					algo = new HillClimbingAlgorithm(new SolutionDesign(design, getRunConfig()), null);
-					
-					((HillClimbingAlgorithm)algo).setRestartCount(rc);
-					((HillClimbingAlgorithm)algo).setRestartDepth(rd);
+					int rc = (Integer) hcRestartCount.getValue();
+					int rd = (Integer) hcRestartDepth.getValue();
+
+					algo = new HillClimbingAlgorithm(new SolutionDesign(design,
+							getRunConfig()), null);
+
+					((HillClimbingAlgorithm) algo).setRestartCount(rc);
+					((HillClimbingAlgorithm) algo).setRestartDepth(rd);
 				} else if (e.getActionCommand().equals("SA")) {
-					int mi = (Integer)saIterationCnt.getValue();
-					algo = new SimAnnAlgorithm(new SolutionDesign(design, getRunConfig()), null, mi);
+					int mi = (Integer) saIterationCnt.getValue();
+					algo = new SimAnnAlgorithm(new SolutionDesign(design,
+							getRunConfig()), null, mi);
 				} else if (e.getActionCommand().equals("RS")) {
-					int mi = (Integer)rsIterationCount.getValue();
-					algo = new RandomSearchAlgorithm(new SolutionDesign(design, getRunConfig()), null, mi);
+					int mi = (Integer) rsIterationCount.getValue();
+					algo = new RandomSearchAlgorithm(new SolutionDesign(design,
+							getRunConfig()), null, mi);
 				} else if (e.getActionCommand().equals("ABC")) {
-					int mi = (Integer)abcIterations.getValue();
-					int mt = (Integer)abcMaxTrials.getValue();
-					int pc = (Integer)abcPopSize.getValue();
-					algo = new BeeColonyAlgorithm(new SolutionDesign(design, getRunConfig()), null, mt, pc, mi);
-				} 
-				else if (e.getActionCommand().equals("PS"))
-				{
+					int mi = (Integer) abcIterations.getValue();
+					int mt = (Integer) abcMaxTrials.getValue();
+					int pc = (Integer) abcPopSize.getValue();
+					algo = new BeeColonyAlgorithm(new SolutionDesign(design,
+							getRunConfig()), null, mt, pc, mi);
+				} else if (e.getActionCommand().equals("PS")) {
+					int mi = (Integer) psiteration.getValue();
+					int ac1 = (Integer) psAc1.getValue();
+					int ac2 = (Integer) psAc2.getValue();
+					int psvmax = (Integer) psVmax.getValue();
+					int psvmin = (Integer) psVmin.getValue();
 					
+					// Temel olarak; PSO algorithmasý, örnegin 10 parcacik büyüklügünde, bir populasyonla baslýyor. 
+					// birinci iterasyon sonunda hepsinin goal'a olan uzaklýgýna bakýlýp, parcaciklarin bulundugu
+					// en iyi 1 yada 2 noktadan devam edilmesi gerekiyor aramaya. 
+					// elimizde olan 10 parcacigi iyi bölge olarak düsündügümüz  götürmemiz lazim. Bizim projemizde yeni noktaya gitmek
+					// demek yeni bi designa gitmek demek ama direk yapamiyoruz cünkü bir designdan baska bi designa gitmek icin 
+					// cesitli acitonlar uygulamamýz gerekiyor elimizde ki designa. Hill Climbing algoritmalarýda burda devreye giricek.
+					// Örnegin 10 parciktan biri birinci iterasyon sonucunda A noktasýnda, 10 parcacik icinde ey iyi noktada bulunanin
+					// konumuda B. A'dan B'ye gitmemiz gerekiyor. Bunu da hill climbing algoritmalariyla yapicz. Hill climbing
+					//A noktasinda bulunan designa cesitli actionlar uygulayarak B'ye olabildigince yakin bi nokta döndürück bize
 					
+					algo = new PSOAlgorithm(new SolutionDesign(
+							design, getRunConfig()), null, mi, ac1, ac2,
+							psvmax, psvmin, (String)selectparticalswarm.getSelectedItem());
 					
+					/*
+					if (selectparticalswarm.getSelectedItem() == "Simple-HC") {
+						algo = new HillClimbingForPSO(new SolutionDesign(
+								design, getRunConfig()), null, mi, ac1, ac2,
+								psvmax, psvmin);
+					} else if (selectparticalswarm.getSelectedItem() == "Stochastic-HC") {
+						algo = new StochasticHCForPSO(
+								new SolutionDesign(design, getRunConfig()),
+								null, mi, ac1, ac2, psvmax, psvmin);
+					} else if (selectparticalswarm.getSelectedItem() == "FirsChoice-HC") {
+						algo = new FirstChoiceHCForPSO(
+								new SolutionDesign(design, getRunConfig()),
+								null, mi, ac1, ac2, psvmax, psvmin);
+					}
+					*/
 				}
-				
-				
+
 				RunPanel rp = new RunPanel(algo);
-				
-				MainWindow.getInstance().getTabs().addTab(algo.getName(), 
-						new ImageIcon(DesignPanel.class.getResource("/resources/icons/play_16.png")), 
-						rp, 
-						null);
+
+				MainWindow
+						.getInstance()
+						.getTabs()
+						.addTab(algo.getName(),
+								new ImageIcon(
+										DesignPanel.class
+												.getResource("/resources/icons/play_16.png")),
+								rp, null);
 
 				MainWindow.getInstance().getTabs().setSelectedComponent(rp);
 			}
 		};
-		
+
 		hcBtnStart.addActionListener(algoListener);
 		saBtnStart.addActionListener(algoListener);
 		rsBtnStart.addActionListener(algoListener);
 		abcBtnStart.addActionListener(algoListener);
-		
+		psbtnstart.addActionListener(algoListener);
+
 		ActionListener taskListener = new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ConcurrentTask task = null;
-				
+
 				String name = null;
 				while (name == null || name.trim().equals(""))
-					name = JOptionPane.showInputDialog(DesignPanel.this, "Name of the task:");
-				
+					name = JOptionPane.showInputDialog(DesignPanel.this,
+							"Name of the task:");
+
 				int runs = -1;
 				while (runs <= 0)
-					try { runs = Integer.parseInt(JOptionPane.showInputDialog(DesignPanel.this, "# of runs:")); } catch(Exception ex) { }
-				
+					try {
+						runs = Integer.parseInt(JOptionPane.showInputDialog(
+								DesignPanel.this, "# of runs:"));
+					} catch (Exception ex) {
+					}
+
 				if (e.getActionCommand().equals("HC")) {
-					int rc = (Integer)hcRestartCount.getValue();
-					int rd = (Integer)hcRestartDepth.getValue();
-					task = new ConcurrentHillClimbing(name, getRunConfig(), design, rc, rd, runs);
+					int rc = (Integer) hcRestartCount.getValue();
+					int rd = (Integer) hcRestartDepth.getValue();
+					task = new ConcurrentHillClimbing(name, getRunConfig(),
+							design, rc, rd, runs);
 				} else if (e.getActionCommand().equals("SA")) {
-					int mi = (Integer)saIterationCnt.getValue();
-					task = new ConcurrentSimAnn(name, getRunConfig(), design, mi, runs);
+					int mi = (Integer) saIterationCnt.getValue();
+					task = new ConcurrentSimAnn(name, getRunConfig(), design,
+							mi, runs);
 				} else if (e.getActionCommand().equals("BS")) {
-					int bl = (Integer)bsBeamLength.getValue();
-					int bi = (Integer)bsIterations.getValue();
-					int br = (Integer)bsRandomDepth.getValue();
-					
+					int bl = (Integer) bsBeamLength.getValue();
+					int bi = (Integer) bsIterations.getValue();
+					int br = (Integer) bsRandomDepth.getValue();
+
 					if (bsIsStochastic.isSelected())
-						task = new ConcurrentStochasticBeamSearch(name, getRunConfig(), design, bl, br, bi, runs);
+						task = new ConcurrentStochasticBeamSearch(name,
+								getRunConfig(), design, bl, br, bi, runs);
 					else
-						task = new ConcurrentBeamSearch(name, getRunConfig(), design, bl, br, bi, runs);
+						task = new ConcurrentBeamSearch(name, getRunConfig(),
+								design, bl, br, bi, runs);
 				} else if (e.getActionCommand().equals("RS")) {
-					int mi = (Integer)rsIterationCount.getValue();
-					task = new ConcurrentRandomSearch(name, getRunConfig(), design, mi, runs);
+					int mi = (Integer) rsIterationCount.getValue();
+					task = new ConcurrentRandomSearch(name, getRunConfig(),
+							design, mi, runs);
 				} else if (e.getActionCommand().equals("ABC")) {
-					int mi = (Integer)abcIterations.getValue();
-					int mt = (Integer)abcMaxTrials.getValue();
-					int pc = (Integer)abcPopSize.getValue();
-					
+					int mi = (Integer) abcIterations.getValue();
+					int mt = (Integer) abcMaxTrials.getValue();
+					int pc = (Integer) abcPopSize.getValue();
+
 					if (abcParallel.isSelected())
-						task = new ConcurrentParallelBeeColony(name, getRunConfig(), design, mt, pc, mi, runs);
+						task = new ConcurrentParallelBeeColony(name,
+								getRunConfig(), design, mt, pc, mi, runs);
 					else
-						task = new ConcurrentBeeColony(name, getRunConfig(), design, mt, pc, mi, runs);
+						task = new ConcurrentBeeColony(name, getRunConfig(),
+								design, mt, pc, mi, runs);
 				}
-				
+
 				if (task != null)
 					TaskQueue.push(task);
 			}
 		};
-		
+
 		hcBtnAddTask.addActionListener(taskListener);
 		saBtnAddTask.addActionListener(taskListener);
 		bsBtnAddTask.addActionListener(taskListener);
 		rsBtnAddTask.addActionListener(taskListener);
 		abcBtnAddTask.addActionListener(taskListener);
+		psbtnaddtask.addActionListener(taskListener);
 	}
-	
+
 	private void initAppliedActions() {
 		List<String> mods = design.getModifications();
-		
+
 		if (mods.size() == 0) {
 			tabbedPane.remove(appliedActionsPanel);
 		}
-		
+
 		final DefaultListModel model = new DefaultListModel();
 		for (String act : design.getModifications()) {
 			model.addElement(act);
 		}
 		appliedActionsList.setModel(model);
 	}
-	
+
 	private void initPossibleActions() {
 		btnPosActionsRefresh.addActionListener(new ActionListener() {
 			@Override
@@ -218,29 +273,32 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 				posActionsList.validate();
 			}
 		});
-		
+
 		btnPosActionsChart.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				HashMap<String, Integer> actionMap = new HashMap<String, Integer>();
 				for (Action act : designData.getActions()) {
-					String type = act.getClass().getEnclosingClass().getSimpleName();
-					
+					String type = act.getClass().getEnclosingClass()
+							.getSimpleName();
+
 					if (actionMap.containsKey(type))
 						actionMap.put(type, actionMap.get(type) + 1);
 					else
 						actionMap.put(type, 1);
 				}
-				
+
 				DefaultPieDataset dataset = new DefaultPieDataset();
 				for (Entry<String, Integer> e : actionMap.entrySet()) {
-					dataset.setValue(ACMAUtil.splitCamelCase(e.getKey()), e.getValue());
+					dataset.setValue(ACMAUtil.splitCamelCase(e.getKey()),
+							e.getValue());
 				}
-				
-				JFreeChart chart = ChartFactory.createPieChart3D("Action Distribution", dataset, true, false, false);
+
+				JFreeChart chart = ChartFactory.createPieChart3D(
+						"Action Distribution", dataset, true, false, false);
 				chart.setBackgroundPaint(new Color(255, 255, 255, 0));
-				
-				PiePlot plot = (PiePlot)chart.getPlot();
+
+				PiePlot plot = (PiePlot) chart.getPlot();
 				plot.setBackgroundPaint(new Color(255, 255, 255, 0));
 				plot.setOutlineVisible(false);
 				plot.setForegroundAlpha(0.75f);
@@ -250,22 +308,23 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 			}
 		});
 	}
-	
+
 	private void initMetrics() {
 		metricTable.setDefaultRenderer(Object.class, new MetricTableRenderer());
-		
-		metricTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e) {
-				EventQueue.invokeLater(new Runnable() {
+
+		metricTable.getSelectionModel().addListSelectionListener(
+				new ListSelectionListener() {
 					@Override
-					public void run() {
-						drawMetricsChart();
+					public void valueChanged(ListSelectionEvent e) {
+						EventQueue.invokeLater(new Runnable() {
+							@Override
+							public void run() {
+								drawMetricsChart();
+							}
+						});
 					}
 				});
-			}
-		});
-		
+
 		btnSave.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -275,26 +334,31 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 					public String getDescription() {
 						return "CSV File";
 					}
-					
+
 					@Override
 					public boolean accept(File f) {
-						if (f.isDirectory()) return true;
+						if (f.isDirectory())
+							return true;
 						return f.getName().endsWith(".csv");
 					}
 				});
 				fc.showSaveDialog(DesignPanel.this);
 
 				File out = fc.getSelectedFile();
-				
-				if (out == null) return;
-				
+
+				if (out == null)
+					return;
+
 				if (out.exists()) {
-					int res = JOptionPane.showConfirmDialog(DesignPanel.this, "This file already exists.\nRewrite?", "File exists", JOptionPane.OK_CANCEL_OPTION);
-					if (res == JOptionPane.CANCEL_OPTION) return;
+					int res = JOptionPane.showConfirmDialog(DesignPanel.this,
+							"This file already exists.\nRewrite?",
+							"File exists", JOptionPane.OK_CANCEL_OPTION);
+					if (res == JOptionPane.CANCEL_OPTION)
+						return;
 				}
-				
+
 				Log.info("Saving metrics to %s", out.getAbsolutePath());
-				
+
 				try {
 					designData.getTable().writeCSV(out.getAbsolutePath());
 				} catch (IOException e1) {
@@ -302,75 +366,84 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 				}
 			}
 		});
-		
+
 		btnPreset.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String name = JOptionPane.showInputDialog(DesignPanel.this, "Please input a name for preset", design.toString());
-				
-				if (name == null) return;
-				
+				String name = JOptionPane.showInputDialog(DesignPanel.this,
+						"Please input a name for preset", design.toString());
+
+				if (name == null)
+					return;
+
 				MetricSummary ms = new MetricSummary(name, design.getMetrics());
 				ConfigManager.add(ms);
 				ConfigManager.saveChanges();
 			}
 		});
 	}
-	
+
 	private void drawMetricsChart() {
 		List<String> cols = designData.getCols();
 		List<String> rows = designData.getRows();
-		
+
 		DefaultCategoryDataset ds = new DefaultCategoryDataset();
-		
+
 		for (int i = 0; i < cols.size(); i++) {
-			ds.addValue(Math.log(designData.getTable().getAverage(cols.get(i)) + 1), "Averages", cols.get(i));
+			ds.addValue(
+					Math.log(designData.getTable().getAverage(cols.get(i)) + 1),
+					"Averages", cols.get(i));
 		}
 
 		if (metricTable.getSelectedRow() >= 0) {
 			for (int i = 0; i < cols.size(); i++)
-				ds.addValue(Math.log(designData.getTable().get(rows.get(metricTable.getSelectedRow()), cols.get(i)) + 1), "Selected", cols.get(i));
+				ds.addValue(
+						Math.log(designData.getTable().get(
+								rows.get(metricTable.getSelectedRow()),
+								cols.get(i)) + 1), "Selected", cols.get(i));
 		}
-		
-		JFreeChart chart = ChartFactory.createBarChart("", "", "log(value)", ds, PlotOrientation.VERTICAL, true, true, false);
-		
+
+		JFreeChart chart = ChartFactory.createBarChart("", "", "log(value)",
+				ds, PlotOrientation.VERTICAL, true, true, false);
+
 		CategoryPlot plot = chart.getCategoryPlot();
 		plot.getDomainAxis().setVisible(false);
 		ChartPanel panel = new ChartPanel(chart);
-		
+
 		chartPanel.removeAll();
 		chartPanel.add(panel);
 		chartPanel.validate();
 	}
-	
+
 	private void validateDesignData() {
 		designData = new DesignData();
-		
+
 		metricTable.setModel(new MetricTableModel());
 		metricTable.getColumnModel().getColumn(0).setPreferredWidth(300);
-		
+
 		lblValNumMetrics.setText(String.valueOf(designData.getCols().size()));
 		lblValNumItems.setText(String.valueOf(designData.getRows().size()));
 		lblValWeightedSum.setText(String.format("%.2f", designData.getScore()));
-		
+
 		final DefaultListModel model = new DefaultListModel();
 		for (Action act : designData.getActions()) {
 			model.addElement(act.toString());
 		}
 		posActionsList.setModel(model);
-		
+
 		drawMetricsChart();
 	}
-	
+
 	private RunConfig getRunConfig() {
 		Object rc = runConfigBox.getSelectedItem();
-		if (rc == null || !(rc instanceof RunConfig)) return RunConfig.getDefault();
-		return (RunConfig)rc;
+		if (rc == null || !(rc instanceof RunConfig))
+			return RunConfig.getDefault();
+		return (RunConfig) rc;
 	}
-	
+
 	private void initConfigSelector() {
 		updateConfigSelector();
-		
+
 		runConfigBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -380,95 +453,98 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 			}
 		});
 	}
-	
+
 	private void updateConfigSelector() {
 		boolean prevfound = false;
 		UUID previd = UUID.randomUUID();
 		Object prc = runConfigBox.getSelectedItem();
 		if (prc != null && prc instanceof RunConfig)
-			previd = ((RunConfig)prc).getId();
-		
+			previd = ((RunConfig) prc).getId();
+
 		runConfigBox.removeAllItems();
-		
+
 		for (RunConfig rc : ConfigManager.runConfigs()) {
 			runConfigBox.addItem(rc);
-			
-			if (rc.getId().equals(previd)) { 
+
+			if (rc.getId().equals(previd)) {
 				prevfound = true;
 				prc = rc;
 			}
 		}
-		
+
 		if (prevfound) {
 			runConfigBox.setSelectedItem(prc);
 		} else {
 			runConfigBox.setSelectedIndex(0);
 		}
 	}
-	
+
 	@Override
 	public void onWindowEvent(Object e) {
 		if (ConfigManager.CONFIG_CHANGED.equals(e)) {
 			updateConfigSelector();
 		}
 	}
-	
+
 	private class DesignData {
 		private MetricTable table;
 		private List<String> cols;
 		private List<String> rows;
 		private List<Action> actions;
-		
+
 		public List<String> getRows() {
 			return rows;
 		}
-		
+
 		public List<String> getCols() {
 			return cols;
 		}
-		
+
 		public MetricTable getTable() {
 			return table;
 		}
-		
+
 		public List<Action> getActions() {
 			return actions;
 		}
-		
+
 		public double getScore() {
 			return MetricCalculator.normalize(table, getRunConfig());
 		}
-		
+
 		private DesignData() {
 			table = MetricCalculator.calculate(design, getRunConfig());
 			rows = table.getRows();
 			Collections.sort(rows);
-			
+
 			cols = new ArrayList<String>();
-			for (ConfigManager.Metric m : ConfigManager.getMetrics(getRunConfig())) {
+			for (ConfigManager.Metric m : ConfigManager
+					.getMetrics(getRunConfig())) {
 				if (m.isEnabled())
 					cols.add(m.getName());
 			}
 			Collections.sort(cols);
-		
-			actions = new ArrayList<Action>(TransitionManager.getPossibleActions(design, getRunConfig()));
+
+			actions = new ArrayList<Action>(
+					TransitionManager
+							.getPossibleActions(design, getRunConfig()));
 		}
 	}
-	
+
 	private class MetricTableModel extends AbstractTableModel {
 		private static final long serialVersionUID = 1L;
-		
+
 		@Override
 		public int getColumnCount() {
 			return designData.getCols().size() + 1;
 		}
-		
+
 		@Override
 		public String getColumnName(int arg0) {
 			if (arg0 == 0)
 				return "Name";
-			
-			return designData.getCols().get(arg0 - 1); 
+
+			return designData.getCols().get(arg0 - 1);
 		}
 
 		@Override
@@ -480,43 +556,52 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 		public Object getValueAt(int row, int col) {
 			if (col == 0)
 				return getRow(designData.getRows().get(row));
-			
-			return designData.getTable().get(designData.getRows().get(row), designData.getCols().get(col - 1));
+
+			return designData.getTable().get(designData.getRows().get(row),
+					designData.getCols().get(col - 1));
 		}
-		
+
 		private Object getRow(String name) {
-				Type t = design.getType(name);
-				if (t != null)
-					return t;
-				return name;
+			Type t = design.getType(name);
+			if (t != null)
+				return t;
+			return name;
 		}
 	}
-	
+
 	private static class MetricTableRenderer extends DefaultTableCellRenderer {
 		private static final long serialVersionUID = 1L;
-		
-		private static final Icon packageIcon = new ImageIcon(MetricTableRenderer.class.getResource("/resources/icons/java/package.gif"));
-		private static final Icon classIcon = new ImageIcon(MetricTableRenderer.class.getResource("/resources/icons/java/class.gif"));
-		private static final Icon interfaceIcon = new ImageIcon(MetricTableRenderer.class.getResource("/resources/icons/java/interface.gif"));
-		private static final Icon annotIcon = new ImageIcon(MetricTableRenderer.class.getResource("/resources/icons/java/annotation.gif"));
-		
+
+		private static final Icon packageIcon = new ImageIcon(
+				MetricTableRenderer.class
+						.getResource("/resources/icons/java/package.gif"));
+		private static final Icon classIcon = new ImageIcon(
+				MetricTableRenderer.class
+						.getResource("/resources/icons/java/class.gif"));
+		private static final Icon interfaceIcon = new ImageIcon(
+				MetricTableRenderer.class
+						.getResource("/resources/icons/java/interface.gif"));
+		private static final Icon annotIcon = new ImageIcon(
+				MetricTableRenderer.class
+						.getResource("/resources/icons/java/annotation.gif"));
+
 		@Override
 		public Component getTableCellRendererComponent(JTable table,
 				Object value, boolean isSelected, boolean hasFocus, int row,
 				int column) {
 
-			super.getTableCellRendererComponent(table, value, isSelected, hasFocus,
-					row, column);
-			
+			super.getTableCellRendererComponent(table, value, isSelected,
+					hasFocus, row, column);
+
 			setIcon(null);
-			
+
 			if (value instanceof Double) {
-				double dval = (Double)value;
+				double dval = (Double) value;
 				if (Double.isNaN(dval)) {
 					setText("");
 				}
 			} else if (value instanceof Type) {
-				Type tval = (Type)value;
+				Type tval = (Type) value;
 				if (tval.isAnnotation())
 					setIcon(annotIcon);
 				else if (tval.isInterface())
@@ -526,7 +611,7 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 			} else if (value instanceof String) {
 				setIcon(packageIcon);
 			}
-			
+
 			return this;
 		}
 	}

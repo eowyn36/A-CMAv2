@@ -22,6 +22,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JTabbedPane;
@@ -160,6 +161,11 @@ public class DesignPanelBase extends JPanel {
 	 protected JButton psbtnaddtask;
 	
 	 protected Component hg6;
+	 
+	 public JComboBox selectparticalswarm;
+	 
+	 protected Component hs20;
+	 
 	/*******************************************************************************/
 	public DesignPanelBase() {
 		setOpaque(false);
@@ -538,7 +544,15 @@ public class DesignPanelBase extends JPanel {
 		 algorithmsTabPane.addTab("Particle Swarm", null, particalswarmpanel, null);			//Tab'ý oluþturuyor
 		 particalswarmpanel.setLayout(new BoxLayout(particalswarmpanel, BoxLayout.X_AXIS));	//Düzeni bozuyor.Hepsini ortalýyor	
 		
-	 	 lbliteration = new JLabel("Iteration:");										//restart count label'ý ismi
+	 	
+		 selectparticalswarm =new JComboBox();
+		 selectparticalswarm.setModel(new DefaultComboBoxModel(new String[] {"Simple-HC", "Stochastic-HC", "FirsChoice-HC"}));
+		 particalswarmpanel.add(selectparticalswarm);
+		 
+		 hs20 = Box.createHorizontalStrut(5);													
+		 particalswarmpanel.add(hs20);	
+		 
+		 lbliteration = new JLabel("Iteration:");										//restart count label'ý ismi
 		 particalswarmpanel.add(lbliteration);												//restart count label'ý	koyuyor
 		
 		 hs15 = Box.createHorizontalStrut(5);													
@@ -557,7 +571,7 @@ public class DesignPanelBase extends JPanel {
 		 particalswarmpanel.add(hs16);	
 		
 		 psAc1 = new JSpinner();
-		 psAc1.setModel(new SpinnerNumberModel(2.05, -1, 100, 1));
+		 psAc1.setModel(new SpinnerNumberModel(2, -1, 100, 1));
 		 particalswarmpanel.add(psAc1);
 
 		
@@ -569,7 +583,7 @@ public class DesignPanelBase extends JPanel {
 		 particalswarmpanel.add(hs17);	
 		
 		 psAc2 = new JSpinner();
-		 psAc2.setModel(new SpinnerNumberModel(2.05, -1, 100, 1));
+		 psAc2.setModel(new SpinnerNumberModel(2, -1, 100, 1));
 		 particalswarmpanel.add(psAc2);
 
 		
@@ -600,7 +614,8 @@ public class DesignPanelBase extends JPanel {
 		 hg6 = Box.createHorizontalGlue();		//Boþluk oluþturuyor
 		 particalswarmpanel.add(hg6);           
 		
-		
+		 
+		 
 	 	 psbtnstart = new JButton("Start");
 		 psbtnstart.setActionCommand("PS");
 		 psbtnstart.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/next_16.png")));
