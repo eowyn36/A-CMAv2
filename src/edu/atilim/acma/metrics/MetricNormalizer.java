@@ -52,11 +52,11 @@ public class MetricNormalizer {
 			if (!config.isMetricEnabled(metric.getName())) continue;
 			
 			double curmetric = current.get(metric.getName());
-			
+			System.out.println("curmetric :" + curmetric);
 			if (Double.isNaN(curmetric) || Double.isNaN(mn[i][0]) || Double.isNaN(mn[i][1]) || mn[i][1] == 0.0) continue;
 			
 			double curnormal = (curmetric - mn[i][0]) / mn[i][1];
-			
+			System.out.println("curnormal: " + curnormal);
 			if (metric.isMinimized()) {
 				items.put(metric.getName(), Math.abs(curnormal - ((0.0 - mn[i][0]) / mn[i][1])));
 			} else {

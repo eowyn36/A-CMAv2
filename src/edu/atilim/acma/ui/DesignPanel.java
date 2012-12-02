@@ -57,7 +57,6 @@ import edu.atilim.acma.search.ConcurrentStochasticBeamSearch;
 import edu.atilim.acma.search.HillClimbingAlgorithm;
 import edu.atilim.acma.search.FirstChoiceHCForPSO;
 import edu.atilim.acma.search.HillClimbingForPSO;
-import edu.atilim.acma.search.PSOAlgorithm;
 import edu.atilim.acma.search.StochasticHCForPSO;
 import edu.atilim.acma.search.RandomSearchAlgorithm;
 import edu.atilim.acma.search.SimAnnAlgorithm;
@@ -141,9 +140,13 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 					// konumuda B. A'dan B'ye gitmemiz gerekiyor. Bunu da hill climbing algoritmalariyla yapicz. Hill climbing
 					//A noktasinda bulunan designa cesitli actionlar uygulayarak B'ye olabildigince yakin bi nokta döndürück bize
 					
-					algo = new PSOAlgorithm(new SolutionDesign(
+					/*algo = new PSOAlgorithm(new SolutionDesign(
 							design, getRunConfig()), null, mi, ac1, ac2,
 							psvmax, psvmin, (String)selectparticalswarm.getSelectedItem());
+					*/
+					
+					algo = new HillClimbingForPSO(new SolutionDesign(design, getRunConfig()), null, null);
+					
 					
 					/*
 					if (selectparticalswarm.getSelectedItem() == "Simple-HC") {

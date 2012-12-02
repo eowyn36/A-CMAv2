@@ -121,23 +121,25 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 	}
 	
 	public double getEuclidianDistance(SolutionDesign goalDesign){
-		HashMap<String, Double> averages = MetricCalculator.normalizeEach(MetricCalculator.calculate(getDesign(), config));
+		
+		HashMap<String, Double> averages = MetricCalculator.getAverages((MetricCalculator.calculate(getDesign(), config)));
+		//HashMap<String, Double> averages = MetricCalculator.normalizeEach(MetricCalculator.calculate(getDesign(), config));
 		//HashMap<String, Double> goal = MetricCalculator.normalizeEach(MetricCalculator.calculate(goalDesign.getDesign(), config));
-		//return' kadar olan kismin tamami sadece test icin PSO calismaya basladigi zaman silicez.
+		
+		List<MetricRegistry.Entry> metrics = MetricRegistry.entries();
+		
+		/*----test icin olan kisim----*/
 		double[] goalMosaic = new double[]{0.5, 0.0, 0.0, 0.0, 2.5, 1.1, 0.0, 5.5, 0.0, 3.1, 0.05, 4.5, 3.2, 0.0, 25, 1.2, 1.3, 4.1, 2.5, 4.3, 0.5, 0.0, 1.3, 0.1, 0.7, 0.0};
 		HashMap<String, Double> goal = new HashMap<String, Double>();
-		List<MetricRegistry.Entry> metrics = MetricRegistry.entries();
+		
 		int i = 0;
 		for (MetricRegistry.Entry entry : metrics) {
 				goal.put(entry.getName(), goalMosaic[i]);
 				i++;
 		}
-		return  calculateEuclidianDistance(averages, goal);
-	}
-	
-	public double calculateEuclidianDistance(HashMap<String, Double> averages, HashMap<String, Double> goal){
+		/*-------------*/
+		
 		double sum = 0;
-		List<MetricRegistry.Entry> metrics = MetricRegistry.entries();
 		for(MetricRegistry.Entry entry : metrics){
 			sum += Math.pow((averages.get(entry.getName()) - goal.get(entry.getName())), 2);
 		}

@@ -1,4 +1,4 @@
-package edu.atilim.acma.search;
+/*package edu.atilim.acma.search;
 
 public class PSOAlgorithm extends AbstractAlgorithm {
 
@@ -34,4 +34,4 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 		// TODO Auto-generated method stub
 		return false;
 	}
-}
+}*/

@@ -58,7 +58,7 @@ public class HillClimbingForPSO extends AbstractAlgorithm {
 	@Override
 	public boolean step() {
 		AlgorithmObserver observer = getObserver();
-		current.getEuclidianDistance(goal);
+		
 		log("Starting iteration %d. Current distance: %.6f, Closest distance: %.6f", getStepCount(), current.getEuclidianDistance(goal), best.getEuclidianDistance(goal));
 		SolutionDesign bestNeighbor = null;
 		
