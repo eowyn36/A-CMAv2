@@ -1,43 +1,21 @@
 package edu.atilim.acma.search;
 
-import javax.swing.JOptionPane;
-
 public class FirstChoiceHCForPSO extends AbstractAlgorithm {
-	public FirstChoiceHCForPSO(SolutionDesign initialDesign,
-			SolutionDesign goal, AlgorithmObserver observer) {
+	public FirstChoiceHCForPSO(SolutionDesign initialDesign, SolutionDesign goal, AlgorithmObserver observer) {
 		super(initialDesign, observer);
 		this.goal = goal;
-		current = best = initialDesign;		
-		JOptionPane.showMessageDialog(null, "FirstChoiceHCForPSO");
+		current = best = initialDesign;
 	}
 
 	private SolutionDesign current;
 	private SolutionDesign best;
 	private SolutionDesign goal;
 
-	private int numRestarts = 0;
-	private int restartCount = 1;
-	private int restartDepth = 100;
-
-	public int getRestartCount() {
-		return restartCount;
-	}
-
-	public void setRestartCount(int restartCount) {
-		this.restartCount = restartCount;
-	}
-
-	public int getRestartDepth() {
-		return restartDepth;
-	}
-
-	public void setRestartDepth(int restartDepth) {
-		this.restartDepth = restartDepth;
-	}
+	private int maxIters = 100;
 
 	@Override
 	public String getName() {
-		return "Hill Climbing";
+		return "First Choice Hill Climbing";
 	}
 
 	@Override
@@ -45,10 +23,8 @@ public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 		AlgorithmObserver observer = getObserver();
 		if (observer != null) {
 			observer.onStart(this, initialDesign);
-			observer.onAdvance(this, 0, restartCount + 1);
-			observer.onUpdateItems(this, current, best,
-					AlgorithmObserver.UPDATE_BEST
-							& AlgorithmObserver.UPDATE_CURRENT);
+			observer.onAdvance(this, 0, maxIters);
+			observer.onUpdateItems(this, current, best, AlgorithmObserver.UPDATE_BEST & AlgorithmObserver.UPDATE_CURRENT);
 		}
 	}
 
@@ -56,7 +32,7 @@ public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 	protected void afterFinish() {
 		AlgorithmObserver observer = getObserver();
 		if (observer != null) {
-			observer.onAdvance(this, restartCount + 1, restartCount + 1);
+			observer.onAdvance(this, maxIters, maxIters);
 			observer.onFinish(this, best);
 		}
 	}
@@ -65,22 +41,22 @@ public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 	public boolean step() {
 		AlgorithmObserver observer = getObserver();
 		current.getEuclidianDistance(goal);
-		log("Starting iteration %d. Current distance: %.6f, Closest distance: %.6f",
-				getStepCount(), current.getEuclidianDistance(goal),
-				best.getEuclidianDistance(goal));
-		SolutionDesign bestNeighbor = null;
 
-		bestNeighbor = current.getClosestNeighbor(goal);
+		log("Starting iteration %d. Current distance: %.6f, Closest distance: %.6f", getStepCount(), current.getEuclidianDistance(goal), best.getEuclidianDistance(goal));
 
-		log("Found neighbor with distance %.6f",
-				bestNeighbor.getEuclidianDistance(goal));
+		SolutionDesign closerRandomNeighbor = current.getCloserRandomNeighbor(goal);
+		//getCloserRandomNeighbor methodunu yazmadim ama yeni method yazmak lazim. getRandomNeighbor'i kullanamazyiz cnkü; sonsuz döngüye giriyodu ya
+		//nedeni daha önce yazdimiz while.. daha yakin komþu bulamiyo o yüzden sonsuza kadar ariyodu. Bu methoudn icinde onu düzelticek bisiler yazmak lazim
+		//sanirim baktimiz komsuya bidaha bakmamak icin bisiler yazmak lazim o methodun icine..
 
-		if (bestNeighbor.isCloserThan(best, goal)) {
-			best = bestNeighbor;
+		
+		log("Found neighbor with distance %.6f", closerRandomNeighbor.getEuclidianDistance(goal));
+
+		if (closerRandomNeighbor.isCloserThan(best, goal)) {
+			best = closerRandomNeighbor;
 
 			if (observer != null) {
-				observer.onUpdateItems(this, current, best,
-						AlgorithmObserver.UPDATE_BEST);
+				observer.onUpdateItems(this, current, best, AlgorithmObserver.UPDATE_BEST);
 			}
 		}
 
@@ -88,31 +64,21 @@ public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 			observer.onExpansion(this, current.getAllActions().size());
 		}
 
-		if (bestNeighbor == current) {
-			log("Found local best point.");
+		if (closerRandomNeighbor == current || getStepCount() > maxIters ) {
+			log("Algorithm finished, the final design's distance to goal is: %.6f", best.getEuclidianDistance(goal));
+			finalDesign = best;
+			return true;
 
-			if (numRestarts < restartCount) {
-				numRestarts++;
-				log("Restarting from random point with %d depth.", restartDepth);
-				current = best.getRandomNeighbor(restartDepth);
-
-				if (observer != null)
-					observer.onAdvance(this, numRestarts, restartCount + 1);
-			} else {
-				log("Algorithm finished, the final design's distance to goal is: %.6f",
-						best.getEuclidianDistance(goal));
-				finalDesign = best;
-				return true;
-			}
 		} else {
-			current = bestNeighbor;
+			current = closerRandomNeighbor;
 
 			if (observer != null) {
-				observer.onUpdateItems(this, current, best,
-						AlgorithmObserver.UPDATE_CURRENT);
+				observer.onUpdateItems(this, current, best, AlgorithmObserver.UPDATE_CURRENT);
 			}
 		}
 
+		if (observer != null)
+			observer.onAdvance(this, getStepCount(), maxIters);
 		return false;
 	}
 }

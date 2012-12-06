@@ -18,3 +18,4 @@ public interface AlgorithmObserver {
 	
 	void onStep(AbstractAlgorithm algorithm, int step);
 }
+

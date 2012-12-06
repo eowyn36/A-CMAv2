@@ -1,20 +1,19 @@
 package edu.atilim.acma.search;
 
 public class HillClimbingAlgorithm extends AbstractAlgorithm {
-	public HillClimbingAlgorithm(SolutionDesign initialDesign,
-			AlgorithmObserver observer) {
+	public HillClimbingAlgorithm(SolutionDesign initialDesign, AlgorithmObserver observer) {
 		super(initialDesign, observer);
-		
+
 		current = best = initialDesign;
 	}
 
 	private SolutionDesign current;
 	private SolutionDesign best;
-	
+
 	private int numRestarts = 0;
 	private int restartCount = 10;
 	private int restartDepth = 100;
-	
+
 	public int getRestartCount() {
 		return restartCount;
 	}
@@ -35,7 +34,7 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 	public String getName() {
 		return "Hill Climbing";
 	}
-	
+
 	@Override
 	protected void beforeStart() {
 		AlgorithmObserver observer = getObserver();
@@ -45,7 +44,7 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 			observer.onUpdateItems(this, current, best, AlgorithmObserver.UPDATE_BEST & AlgorithmObserver.UPDATE_CURRENT);
 		}
 	}
-	
+
 	@Override
 	protected void afterFinish() {
 		AlgorithmObserver observer = getObserver();
@@ -58,39 +57,39 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 	@Override
 	public boolean step() {
 		AlgorithmObserver observer = getObserver();
-		
+
 		log("Starting iteration %d. Current score: %.6f, Best score: %.6f", getStepCount(), current.getScore(), best.getScore());
 		SolutionDesign bestNeighbor = null;
-		
-		//if (restartCount == 0)
-		//	bestNeighbor = current.getBestNeighbor();
-		//else
-		//	bestNeighbor = current.getBetterNeighbor();
-		
+
+		// if (restartCount == 0)
+		// bestNeighbor = current.getBestNeighbor();
+		// else
+		// bestNeighbor = current.getBetterNeighbor();
+
 		bestNeighbor = current.getBestNeighbor();
-		
+
 		log("Found neighbor with score %.6f score", bestNeighbor.getScore());
-		
+
 		if (bestNeighbor.isBetterThan(best)) {
 			best = bestNeighbor;
-			
+
 			if (observer != null) {
 				observer.onUpdateItems(this, current, best, AlgorithmObserver.UPDATE_BEST);
 			}
 		}
-		
+
 		if (observer != null) {
 			observer.onExpansion(this, current.getAllActions().size());
 		}
-		
+
 		if (bestNeighbor == current) {
 			log("Found local best point.");
-			
+
 			if (numRestarts < restartCount) {
 				numRestarts++;
 				log("Restarting from random point with %d depth.", restartDepth);
 				current = best.getRandomNeighbor(restartDepth);
-				
+
 				if (observer != null)
 					observer.onAdvance(this, numRestarts, restartCount + 1);
 			} else {
@@ -100,12 +99,12 @@ public class HillClimbingAlgorithm extends AbstractAlgorithm {
 			}
 		} else {
 			current = bestNeighbor;
-			
+
 			if (observer != null) {
 				observer.onUpdateItems(this, current, best, AlgorithmObserver.UPDATE_CURRENT);
 			}
 		}
-		
+
 		return false;
 	}
 }
