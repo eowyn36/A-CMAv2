@@ -1,11 +1,14 @@
 package edu.atilim.acma.search;
 
+import javax.swing.JOptionPane;
+
 public class StochasticHCForPSO extends AbstractAlgorithm {
 	public StochasticHCForPSO(SolutionDesign initialDesign,
 			SolutionDesign goal, AlgorithmObserver observer) {
 		super(initialDesign, observer);
 		this.goal = goal;
-		current = best = initialDesign;
+		current = best = initialDesign;		
+		JOptionPane.showMessageDialog(null, "StochasticHCForPSO");
 	}
 
 	private SolutionDesign current;
@@ -13,7 +16,7 @@ public class StochasticHCForPSO extends AbstractAlgorithm {
 	private SolutionDesign goal;
 
 	private int numRestarts = 0;
-	private int restartCount = 1;
+	private int restartCount = 10;
 	private int restartDepth = 100;
 
 	public int getRestartCount() {
@@ -62,18 +65,24 @@ public class StochasticHCForPSO extends AbstractAlgorithm {
 	public boolean step() {
 		AlgorithmObserver observer = getObserver();
 		current.getEuclidianDistance(goal);
-		log("Starting iteration %d. Current distance: %.6f, Closest distance: %.6f",
-				getStepCount(), current.getEuclidianDistance(goal),
-				best.getEuclidianDistance(goal));
-		SolutionDesign bestNeighbor = null;
-
-		bestNeighbor = current.getClosestNeighbor(goal);
+		
+		log("Starting iteration %d. Current distance: %.6f, Closest distance: %.6f",getStepCount(), current.getEuclidianDistance(goal),best.getEuclidianDistance(goal));
+		
+		
+		if (getStepCount() > restartCount) {
+			log("Algorithm finished, the final design's distance to goal is: %.6f", best.getEuclidianDistance(goal));
+			finalDesign = best;
+			return true;
+		}
+		
+		
+		SolutionDesign randomNeighbor = current.getRandomNeighbor();
 
 		log("Found neighbor with distance %.6f",
-				bestNeighbor.getEuclidianDistance(goal));
+				randomNeighbor.getEuclidianDistance(goal));
 
-		if (bestNeighbor.isCloserThan(best, goal)) {
-			best = bestNeighbor;
+		if (randomNeighbor.isCloserThan(best, goal)) {
+			best = randomNeighbor;
 
 			if (observer != null) {
 				observer.onUpdateItems(this, current, best,
@@ -85,7 +94,7 @@ public class StochasticHCForPSO extends AbstractAlgorithm {
 			observer.onExpansion(this, current.getAllActions().size());
 		}
 
-		if (bestNeighbor == current) {
+		if (randomNeighbor == current) {
 			log("Found local best point.");
 
 			if (numRestarts < restartCount) {
@@ -102,7 +111,7 @@ public class StochasticHCForPSO extends AbstractAlgorithm {
 				return true;
 			}
 		} else {
-			current = bestNeighbor;
+			current = randomNeighbor;
 
 			if (observer != null) {
 				observer.onUpdateItems(this, current, best,

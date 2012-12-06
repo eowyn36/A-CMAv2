@@ -1,11 +1,14 @@
 package edu.atilim.acma.search;
 
+import javax.swing.JOptionPane;
+
 public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 	public FirstChoiceHCForPSO(SolutionDesign initialDesign,
 			SolutionDesign goal, AlgorithmObserver observer) {
 		super(initialDesign, observer);
 		this.goal = goal;
-		current = best = initialDesign;
+		current = best = initialDesign;		
+		JOptionPane.showMessageDialog(null, "FirstChoiceHCForPSO");
 	}
 
 	private SolutionDesign current;

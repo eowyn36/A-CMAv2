@@ -144,8 +144,16 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 							design, getRunConfig()), null, mi, ac1, ac2,
 							psvmax, psvmin, (String)selectparticalswarm.getSelectedItem());
 					*/
+					if (selectparticalswarm.getSelectedItem() == "Simple-HC") {
+						algo = new HillClimbingForPSO(new SolutionDesign(design, getRunConfig()), null, null);
+					} else if (selectparticalswarm.getSelectedItem() == "Stochastic-HC") {
+						algo = new StochasticHCForPSO(new SolutionDesign(design, getRunConfig()), null, null);
+					} else if (selectparticalswarm.getSelectedItem() == "FirsChoice-HC") {
+						algo = new FirstChoiceHCForPSO(new SolutionDesign(design, getRunConfig()), null, null);
+					}
 					
-					algo = new HillClimbingForPSO(new SolutionDesign(design, getRunConfig()), null, null);
+					
+					
 					
 					
 					/*

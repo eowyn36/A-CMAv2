@@ -139,10 +139,17 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 		}
 		/*-------------*/
 		
+		
+		
 		double sum = 0;
 		for(MetricRegistry.Entry entry : metrics){
 			sum += Math.pow((averages.get(entry.getName()) - goal.get(entry.getName())), 2);
+			System.out.println(entry.getName()+"   "+ averages.get(entry.getName()));
+			
 		}
+		System.out.println("               "+sum+"    "+Math.sqrt(sum));
+		
+		
 		return Math.sqrt(sum);
 	}
 	
