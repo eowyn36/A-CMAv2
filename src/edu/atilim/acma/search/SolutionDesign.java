@@ -93,37 +93,32 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 		
 		HashMap<SolutionDesign, Double> closerDesigns = new HashMap<SolutionDesign, Double>();
 		Double sumOfDistances = 0.0;
+		double currentDistance = this.getEuclidianDistance(goalDesign);
 		for (SolutionDesign sd : this)
 		{
 			if (sd.isCloserThan(this, goalDesign))
 			{
-				closerDesigns.put(sd, sd.getEuclidianDistance(goalDesign));
+				closerDesigns.put(sd, currentDistance - sd.getEuclidianDistance(goalDesign));
 				sumOfDistances += sd.getEuclidianDistance(goalDesign);
 				System.out.println(sd.getEuclidianDistance(goalDesign));
 			}
 		}
 		System.out.println("Toplam :" + sumOfDistances);
-			
+		
 		double randomnumber = new Random().nextDouble() * sumOfDistances;
 		
 		System.out.println(randomnumber);
 		
-		Iterator iter = closerDesigns.entrySet().iterator();
-		
 		double total = 0.0;
 		
-		while (iter.hasNext())
+		for (SolutionDesign key : closerDesigns.keySet())
 		{
-			Map.Entry mEntry = (Entry) iter.next();
 			if (randomnumber < total)
-			{
-				best = (SolutionDesign) mEntry.getKey();				
-				return best;
-				
-			} else
-			{
-				total = total + (double) mEntry.getValue();
-			}
+				return best = key;
+			
+			else
+				total = total + closerDesigns.get(key);
+			
 		}
 		
 		return best;
@@ -134,6 +129,53 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 	public SolutionDesign getCloserRandomNeighbor(SolutionDesign goalDesign)
 	{
 		SolutionDesign closerRandomNeighbor = this;
+		
+		HashMap<SolutionDesign, Double> designs = new HashMap<SolutionDesign, Double>();
+		Double sumOfDistances = 0.0;
+		double currentDistance = this.getEuclidianDistance(goalDesign);
+		
+		for (SolutionDesign sd : this)
+		{
+			if (sd.isCloserThan(this, goalDesign))
+			{
+				designs.put(sd, sd.getEuclidianDistance(goalDesign));
+				sumOfDistances += sd.getEuclidianDistance(goalDesign);
+				System.out.println(sd.getEuclidianDistance(goalDesign));
+			}
+		}
+		System.out.println("Toplam :" + sumOfDistances);
+		
+		Random random = new Random();
+		
+		Iterator iter = designs.entrySet().iterator();
+		
+		List<Double> mylist = new ArrayList<Double>();
+		
+		while (iter.hasNext())
+		{
+			Map.Entry mEntry = (Entry) iter.next();
+			
+			mylist.add((Double) mEntry.getValue());
+			
+		}
+		
+		double randomvalue = mylist.get(random.nextInt(mylist.size()));
+		
+		
+		Iterator iter2 = designs.entrySet().iterator();
+		
+		while (iter2.hasNext())
+		{
+			Map.Entry mEntry = (Entry) iter2.next();
+			
+			if (randomvalue < currentDistance)
+			{
+				closerRandomNeighbor = (SolutionDesign) mEntry.getKey();
+				
+				return closerRandomNeighbor;
+			}
+			
+		}
 		
 		return closerRandomNeighbor;
 	}
