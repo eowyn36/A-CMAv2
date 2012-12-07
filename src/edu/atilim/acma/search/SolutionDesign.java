@@ -103,23 +103,7 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 			}
 		}
 		System.out.println("Toplam :" + sumOfDistances);
-		
-		/*
-		 * Iterator iter=closerDesigns.entrySet().iterator();
-		 * 
-		 * while(iter.hasNext()) { Map.Entry mEntry= (Entry) iter.next();
-		 * System.out.println(mEntry.getKey() + "  :  " + mEntry.getValue());
-		 * 
-		 * }
-		 */
-		
-		/*
-		 * Object[] values=closerDesigns.values().toArray(); Object
-		 * randomdesignvalue=values[random.nextInt(values.length)];
-		 * 
-		 * System.out.println(randomdesignvalue);
-		 */
-		
+			
 		double randomnumber = new Random().nextDouble() * sumOfDistances;
 		
 		System.out.println(randomnumber);
@@ -133,12 +117,12 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 			Map.Entry mEntry = (Entry) iter.next();
 			if (randomnumber < total)
 			{
-				System.out.println("    "+mEntry.getKey()+"    "+mEntry.getValue());
-				//Burada þartý saðlarsa "mEntry.getValue()" 'nun dizaynýný göndereceðim.
+				best = (SolutionDesign) mEntry.getKey();				
+				return best;
 				
 			} else
 			{
-				total=total+(double) mEntry.getValue();				
+				total = total + (double) mEntry.getValue();
 			}
 		}
 		
