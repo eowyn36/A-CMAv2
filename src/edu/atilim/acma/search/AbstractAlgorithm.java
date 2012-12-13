@@ -1,5 +1,7 @@
 package edu.atilim.acma.search;
 
+import java.util.HashMap;
+
 import edu.atilim.acma.util.Log;
 
 public abstract class AbstractAlgorithm {
@@ -39,6 +41,10 @@ public abstract class AbstractAlgorithm {
 	}
 	
 	protected void afterFinish() {
+		
+	}
+	
+	protected void setGoal(HashMap<String, Double> goal){
 		
 	}
 	

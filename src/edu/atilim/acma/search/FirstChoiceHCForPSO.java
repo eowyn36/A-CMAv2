@@ -1,21 +1,27 @@
 package edu.atilim.acma.search;
 
+import java.util.HashMap;
+
 public class FirstChoiceHCForPSO extends AbstractAlgorithm {
-	public FirstChoiceHCForPSO(SolutionDesign initialDesign, SolutionDesign goal, AlgorithmObserver observer) {
+	public FirstChoiceHCForPSO(SolutionDesign initialDesign, AlgorithmObserver observer) {
 		super(initialDesign, observer);
-		this.goal = goal;
 		current = best = initialDesign;
 	}
 
 	private SolutionDesign current;
 	private SolutionDesign best;
-	private SolutionDesign goal;
+	private HashMap<String, Double> goal;
 
 	private int maxIters = 100;
 
 	@Override
 	public String getName() {
 		return "First Choice Hill Climbing";
+	}
+	
+	@Override
+	public void setGoal(HashMap<String, Double> goal) {
+		this.goal = goal;
 	}
 
 	@Override
@@ -40,15 +46,10 @@ public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 	@Override
 	public boolean step() {
 		AlgorithmObserver observer = getObserver();
-		current.getEuclidianDistance(goal);
 
 		log("Starting iteration %d. Current distance: %.6f, Closest distance: %.6f", getStepCount(), current.getEuclidianDistance(goal), best.getEuclidianDistance(goal));
 
 		SolutionDesign closerRandomNeighbor = current.getCloserRandomNeighbor(goal);
-		//getCloserRandomNeighbor methodunu yazmadim ama yeni method yazmak lazim. getRandomNeighbor'i kullanamazyiz cnkü; sonsuz döngüye giriyodu ya
-		//nedeni daha önce yazdimiz while.. daha yakin komþu bulamiyo o yüzden sonsuza kadar ariyodu. Bu methoudn icinde onu düzelticek bisiler yazmak lazim
-		//sanirim baktimiz komsuya bidaha bakmamak icin bisiler yazmak lazim o methodun icine..
-
 		
 		log("Found neighbor with distance %.6f", closerRandomNeighbor.getEuclidianDistance(goal));
 

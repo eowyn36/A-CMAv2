@@ -57,6 +57,7 @@ import edu.atilim.acma.search.ConcurrentStochasticBeamSearch;
 import edu.atilim.acma.search.HillClimbingAlgorithm;
 import edu.atilim.acma.search.FirstChoiceHCForPSO;
 import edu.atilim.acma.search.HillClimbingForPSO;
+import edu.atilim.acma.search.PSOAlgorithm;
 import edu.atilim.acma.search.StochasticHCForPSO;
 import edu.atilim.acma.search.RandomSearchAlgorithm;
 import edu.atilim.acma.search.SimAnnAlgorithm;
@@ -125,52 +126,12 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 							getRunConfig()), null, mt, pc, mi);
 				} else if (e.getActionCommand().equals("PS")) {
 					int mi = (Integer) psiteration.getValue();
-					int ac1 = (Integer) psAc1.getValue();
-					int ac2 = (Integer) psAc2.getValue();
 					int psvmax = (Integer) psVmax.getValue();
 					int psvmin = (Integer) psVmin.getValue();
+
+					String hcAlgoName = (String) selectparticalswarm.getSelectedItem();
 					
-					// Temel olarak; PSO algorithmasý, örnegin 10 parcacik büyüklügünde, bir populasyonla baslýyor. 
-					// birinci iterasyon sonunda hepsinin goal'a olan uzaklýgýna bakýlýp, parcaciklarin bulundugu
-					// en iyi 1 yada 2 noktadan devam edilmesi gerekiyor aramaya. 
-					// elimizde olan 10 parcacigi iyi bölge olarak düsündügümüz  götürmemiz lazim. Bizim projemizde yeni noktaya gitmek
-					// demek yeni bi designa gitmek demek ama direk yapamiyoruz cünkü bir designdan baska bi designa gitmek icin 
-					// cesitli acitonlar uygulamamýz gerekiyor elimizde ki designa. Hill Climbing algoritmalarýda burda devreye giricek.
-					// Örnegin 10 parciktan biri birinci iterasyon sonucunda A noktasýnda, 10 parcacik icinde ey iyi noktada bulunanin
-					// konumuda B. A'dan B'ye gitmemiz gerekiyor. Bunu da hill climbing algoritmalariyla yapicz. Hill climbing
-					//A noktasinda bulunan designa cesitli actionlar uygulayarak B'ye olabildigince yakin bi nokta döndürück bize
-					
-					/*algo = new PSOAlgorithm(new SolutionDesign(
-							design, getRunConfig()), null, mi, ac1, ac2,
-							psvmax, psvmin, (String)selectparticalswarm.getSelectedItem());
-					*/
-					if (selectparticalswarm.getSelectedItem() == "Simple-HC") {
-						algo = new HillClimbingForPSO(new SolutionDesign(design, getRunConfig()), null, null);
-					} else if (selectparticalswarm.getSelectedItem() == "Stochastic-HC") {
-						algo = new StochasticHCForPSO(new SolutionDesign(design, getRunConfig()), null, null);
-					} else if (selectparticalswarm.getSelectedItem() == "FirsChoice-HC") {
-						algo = new FirstChoiceHCForPSO(new SolutionDesign(design, getRunConfig()), null, null);
-					}
-					
-					
-					
-					
-					
-					/*
-					if (selectparticalswarm.getSelectedItem() == "Simple-HC") {
-						algo = new HillClimbingForPSO(new SolutionDesign(
-								design, getRunConfig()), null, mi, ac1, ac2,
-								psvmax, psvmin);
-					} else if (selectparticalswarm.getSelectedItem() == "Stochastic-HC") {
-						algo = new StochasticHCForPSO(
-								new SolutionDesign(design, getRunConfig()),
-								null, mi, ac1, ac2, psvmax, psvmin);
-					} else if (selectparticalswarm.getSelectedItem() == "FirsChoice-HC") {
-						algo = new FirstChoiceHCForPSO(
-								new SolutionDesign(design, getRunConfig()),
-								null, mi, ac1, ac2, psvmax, psvmin);
-					}
-					*/
+					algo = new PSOAlgorithm(new SolutionDesign(design, getRunConfig()), null, psvmax, psvmin, hcAlgoName, mi);
 				}
 
 				RunPanel rp = new RunPanel(algo);

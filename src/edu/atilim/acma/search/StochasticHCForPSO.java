@@ -1,21 +1,28 @@
 package edu.atilim.acma.search;
 
+import java.util.HashMap;
+
 public class StochasticHCForPSO extends AbstractAlgorithm {
-	public StochasticHCForPSO(SolutionDesign initialDesign, SolutionDesign goal, AlgorithmObserver observer) {
+	public StochasticHCForPSO(SolutionDesign initialDesign, AlgorithmObserver observer) {
 		super(initialDesign, observer);
-		this.goal = goal;
 		current = best = initialDesign;
 	}
 
 	private SolutionDesign current;
 	private SolutionDesign best;
-	private SolutionDesign goal;
+	private HashMap<String, Double> goal;
 	
 	private int maxIters = 100;
 
 	@Override
 	public String getName() {
 		return "Hill Climbing";
+	}
+	
+	@Override
+	public void setGoal(HashMap<String, Double> goal) {
+		this.goal = goal;
+		System.out.println("Hill Climbing for PSO setGoal override activated !!!");
 	}
 
 	@Override
@@ -40,7 +47,6 @@ public class StochasticHCForPSO extends AbstractAlgorithm {
 	@Override
 	public boolean step() {
 		AlgorithmObserver observer = getObserver();
-		current.getEuclidianDistance(goal);
 
 		log("Starting iteration %d. Current distance: %.6f, Closest distance: %.6f", getStepCount(), current.getEuclidianDistance(goal),
 				best.getEuclidianDistance(goal));
