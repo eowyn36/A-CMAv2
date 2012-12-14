@@ -70,9 +70,13 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 	public MetricSummary getMetricSummary() {
 		return MetricCalculator.calculate(getDesign(), config).getSummary();
 	}
-	
+
 	public HashMap<String, Double> getLocation() {
 		return MetricCalculator.getAverages((MetricCalculator.calculate(getDesign(), config)));
+	}
+
+	public Double getLocation(String metricName) {
+		return getLocation().get(metricName);
 	}
 
 	public SolutionDesign getClosestNeighbor(HashMap<String, Double> goal) {
@@ -128,6 +132,9 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 
 	// For Stochastic Hill Climbing
 	public SolutionDesign getCloserNeighbor(HashMap<String, Double> goal) {
+		
+		//TODO threat
+		
 		SolutionDesign best = this;
 
 		HashMap<SolutionDesign, Double> closerDesigns = new HashMap<SolutionDesign, Double>();
@@ -146,7 +153,6 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 
 		for (SolutionDesign key : closerDesigns.keySet()) {
 			total = total + closerDesigns.get(key);
-			System.out.println(total);
 			if (randomnumber < total)
 				return best = key;
 		}
@@ -156,55 +162,18 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 	// For First-Choice Hill Climbing
 	public SolutionDesign getCloserRandomNeighbor(HashMap<String, Double> goal) {
 		SolutionDesign closerRandomNeighbor = this;
-		List<SolutionDesign> checkedNeighbors = new ArrayList<SolutionDesign>();
-		SolutionDesign randomNeighbor = getRandomNeighbor();
-
-		if (!checkedNeighbors.contains(randomNeighbor))
+		int rndmNo;
+		List<Action> actions = getAllActions();
+		SolutionDesign randomNeighbor;
+		
+		while(!actions.isEmpty()){
+			rndmNo = ACMAUtil.RANDOM.nextInt(actions.size());
+			randomNeighbor = apply(actions.get(rndmNo));
+			actions.remove(rndmNo);
 			if (randomNeighbor.getEuclidianDistance(goal) < this.getEuclidianDistance(goal))
 				return closerRandomNeighbor = randomNeighbor;
-
-		/*
-		HashMap<SolutionDesign, Double> designs = new HashMap<SolutionDesign, Double>();
-		Double sumOfDistances = 0.0;
-		double currentDistance = this.getEuclidianDistance(goal);
-
-		for (SolutionDesign sd : this) {
-			if (sd.isCloserThan(this, goal)) {
-				designs.put(sd, sd.getEuclidianDistance(goal));
-				sumOfDistances += sd.getEuclidianDistance(goal);
-				System.out.println(sd.getEuclidianDistance(goal));
-			}
 		}
-		System.out.println("Toplam :" + sumOfDistances);
-
-		Random random = new Random();
-
-		Iterator iter = designs.entrySet().iterator();
-
-		List<Double> mylist = new ArrayList<Double>();
-
-		while (iter.hasNext()) {
-			Map.Entry mEntry = (Entry) iter.next();
-
-			mylist.add((Double) mEntry.getValue());
-
-		}
-
-		double randomvalue = mylist.get(random.nextInt(mylist.size()));
-
-		Iterator iter2 = designs.entrySet().iterator();
-
-		while (iter2.hasNext()) {
-			Map.Entry mEntry = (Entry) iter2.next();
-
-			if (randomvalue < currentDistance) {
-				closerRandomNeighbor = (SolutionDesign) mEntry.getKey();
-
-				return closerRandomNeighbor;
-			}
-
-		}
-*/
+	
 		return closerRandomNeighbor;
 	}
 

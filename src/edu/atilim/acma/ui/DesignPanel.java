@@ -129,9 +129,15 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 					int psvmax = (Integer) psVmax.getValue();
 					int psvmin = (Integer) psVmin.getValue();
 
-					String hcAlgoName = (String) selectparticalswarm.getSelectedItem();
+					AbstractAlgorithm hcAlgorithm = null;
+					if (selectparticalswarm.getSelectedItem().equals("Simple-HC"))
+						hcAlgorithm = new HillClimbingForPSO(null, null);
+					else if (selectparticalswarm.getSelectedItem().equals("Stochastic-HC"))
+						hcAlgorithm = new StochasticHCForPSO(null, null);
+					else if (selectparticalswarm.getSelectedItem().equals("FirsChoice-HC"))
+						hcAlgorithm = new FirstChoiceHCForPSO(null, null);		
 					
-					algo = new PSOAlgorithm(new SolutionDesign(design, getRunConfig()), null, psvmax, psvmin, hcAlgoName, mi);
+					algo = new PSOAlgorithm(new SolutionDesign(design, getRunConfig()), null, psvmax, psvmin, hcAlgorithm, mi);
 				}
 
 				RunPanel rp = new RunPanel(algo);

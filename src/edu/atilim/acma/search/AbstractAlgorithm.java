@@ -47,7 +47,9 @@ public abstract class AbstractAlgorithm {
 	protected void setGoal(HashMap<String, Double> goal){
 		
 	}
+	public void setInitialDesign(SolutionDesign initialDesign){
 	
+	}
 	protected int getStepCount() {
 		return stepCount;
 	}

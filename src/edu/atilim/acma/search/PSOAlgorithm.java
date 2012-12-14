@@ -23,26 +23,25 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 	private AbstractAlgorithm hcAlgorithm;
 	private double vmin;
 	private double vmax;
-	private int iterations = 5000;
+	private int iterations = 50;
 
 	private int swarmSize = 10;
 	private int randomDepth = 100;
 	private int w = 1;
 	private double ac1, ac2 = 2.05;
 	private double globalBest = Double.MAX_VALUE;
-	private String hcAlgoName;
 
 	private Set<Particle> swarm;
 	private SolutionDesign bestDesign;
 
-	public PSOAlgorithm(SolutionDesign initialDesign, AlgorithmObserver observer, int vmax, int vmin, String hcAlgoName, int iterations) {
+	public PSOAlgorithm(SolutionDesign initialDesign, AlgorithmObserver observer, int vmax, int vmin, AbstractAlgorithm hcAlgorithm, int iterations) {
 		super(initialDesign, observer);
 		this.vmax = vmax;
 		this.vmin = vmin;
-		this.hcAlgoName = hcAlgoName;
+		this.hcAlgorithm = hcAlgorithm;
 		this.iterations = iterations;
 		this.swarm = new HashSet<Particle>();
-		
+
 		generateInitialSwarm();
 	}
 
@@ -82,15 +81,7 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 
 	@Override
 	public boolean step() {
-		//TODO Vmax, Vmin, LOG, PSO nereye kadar devam edicek ?
-		
-		if (getStepCount() > iterations) {
-			finalDesign = bestDesign;
-			log("Algorithm finished, the final design score: %.6f", bestDesign.getScore());
-			return true;
-		}
-			
-		log("Starting iteration %d", getStepCount());
+		// TODO Vmax, Vmin
 
 		for (Particle particle : swarm) {
 			// update personal best
@@ -104,16 +95,31 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 			}
 		}
 
+		if (getStepCount() > iterations) {
+			finalDesign = bestDesign;
+			log("Algorithm finished, the final design score: %.6f", bestDesign.getScore());
+			return true;
+		}
+
+		log("Starting iteration %d", getStepCount());
+
 		// update velocity
 		List<MetricRegistry.Entry> metrics = MetricRegistry.entries();
 		Random rndm = new Random();
 		double newV;
 		String metricName;
 		for (Particle particle : swarm) {
-			// double newVelX = (w * vx) + (r1 * C1) * (pBestX - lx) + (r2 * C2) * (gBestX - lx)
+			// double newVelX = (w * vx) + (r1 * C1) * (pBestX - lx) + (r2 * C2)
+			// * (gBestX - lx)
 			for (MetricRegistry.Entry entry : metrics) {
 				metricName = entry.getName();
-				newV = (w * particle.getVelocity(metricName)) + (rndm.nextDouble() * ac1) * (particle.getPersonalBest(metricName) - particle.getLocation(metricName)) + (rndm.nextDouble() * ac2);
+				newV = (w * particle.getVelocity(metricName)) + (rndm.nextDouble() * ac1)
+						* (particle.getPersonalBest(metricName) - particle.getLocation(metricName)) + (rndm.nextDouble() * ac2)
+						* (bestDesign.getLocation(metricName) - particle.getLocation(metricName));
+				/*if(newV > vmax)
+					newV = vmax;
+				if(newV < vmin)
+					newV = vmin;*/
 				particle.setVelocity(entry.getName(), newV);
 			}
 		}
@@ -125,15 +131,16 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 			for (MetricRegistry.Entry entry : metrics) {
 				goal.put(entry.getName(), particle.getLocation(entry.getName()) + particle.getVelocity(entry.getName()));
 			}
-			if(hcAlgoName.equals("Simple-HC") )
-				hcAlgorithm = new HillClimbingForPSO(particle.getCurrentDesign(), null);
+			
+			hcAlgorithm.setInitialDesign(particle.getCurrentDesign());
 			hcAlgorithm.setGoal(goal);
-			hcAlgorithm.start(false); //TODO threat  ?? 
-			particle.setCurrentDesign(hcAlgorithm.finalDesign);			
+			hcAlgorithm.start(false);
+			
+			particle.setCurrentDesign(hcAlgorithm.finalDesign);
 		}
 
 		log("Finished iteration %d. Best score: %.6f", getStepCount(), bestDesign.getScore());
-		
+
 		return false;
 	}
 
@@ -157,10 +164,10 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 				velocity.put(entry.getName(), generator.nextDouble() * 2.0 - 1.0);
 		}
 
-		public void setCurrentDesign(SolutionDesign sd){
+		public void setCurrentDesign(SolutionDesign sd) {
 			currentDesign = sd;
 		}
-		
+
 		public void updatePersonalBest(SolutionDesign sd) {
 			personelBest = sd;
 		}
@@ -190,7 +197,7 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 		}
 
 		public Double getLocation(String metricName) {
-			return currentDesign.getLocation().get(metricName);
+			return currentDesign.getLocation(metricName);
 		}
 	}
 

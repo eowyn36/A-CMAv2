@@ -22,9 +22,14 @@ public class StochasticHCForPSO extends AbstractAlgorithm {
 	@Override
 	public void setGoal(HashMap<String, Double> goal) {
 		this.goal = goal;
-		System.out.println("Hill Climbing for PSO setGoal override activated !!!");
 	}
 
+	@Override
+	public void setInitialDesign(SolutionDesign initialDesign){
+		this.initialDesign = initialDesign;
+		current = best = initialDesign;
+	}
+	
 	@Override
 	protected void beforeStart() {
 		AlgorithmObserver observer = getObserver();

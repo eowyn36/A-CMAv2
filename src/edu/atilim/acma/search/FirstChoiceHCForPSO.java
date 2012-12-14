@@ -23,6 +23,12 @@ public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 	public void setGoal(HashMap<String, Double> goal) {
 		this.goal = goal;
 	}
+	
+	@Override
+	public void setInitialDesign(SolutionDesign initialDesign){
+		this.initialDesign = initialDesign;
+		current = best = initialDesign;
+	}
 
 	@Override
 	protected void beforeStart() {
