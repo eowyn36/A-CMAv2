@@ -156,7 +156,7 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 
 				MainWindow.getInstance().getTabs().setSelectedComponent(rp);
 				}
-				//bi serarhun bitmesini beklemesi lazim ama beklemiyo.. yine bakarim bu aksam ama pes ettim su an
+				//bi searchun bitmesini beklemesi lazim ama beklemiyo.. yine bakarim bu aksam ama pes ettim su an
 			}
 		};
 
