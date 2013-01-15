@@ -10,6 +10,7 @@ public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 
 	private SolutionDesign current;
 	private SolutionDesign best;
+	private Double bestDistance;
 	private HashMap<String, Double> goal;
 
 	private int maxIters = 100;
@@ -28,6 +29,7 @@ public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 	public void setInitialDesign(SolutionDesign initialDesign) {
 		this.initialDesign = initialDesign;
 		current = best = initialDesign;
+		bestDistance = best.getEuclidianDistance(goal);
 	}
 
 	@Override
@@ -60,8 +62,9 @@ public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 
 		log("Found neighbor with distance %.6f", closerRandomNeighbor.getEuclidianDistance(goal));
 
-		if (closerRandomNeighbor.isCloserThan(best, goal)) {
+		if (closerRandomNeighbor.isCloserThan(bestDistance, goal)) {
 			best = closerRandomNeighbor;
+			bestDistance = best.getEuclidianDistance(goal);
 
 			if (observer != null) {
 				observer.onUpdateItems(this, current, best, AlgorithmObserver.UPDATE_BEST);

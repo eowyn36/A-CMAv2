@@ -46,6 +46,8 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 		generateInitialSwarm();
 	}
 //for testing
+	//burdaki contructora bütün degiþtiriceimiz degiþkenleri verelim design panelde pso yaratirken bu contructorla yaratiriz test icin
+	// W ekledim ben bi digerlerinide eklemek lazim..
 	public PSOAlgorithm(SolutionDesign initialDesign, AlgorithmObserver observer, AbstractAlgorithm hcAlgorithm, int iterations, int w) {
 		super(initialDesign, observer);
 		//this.vmax = vmax;
@@ -129,7 +131,7 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 				newV = (w * particle.getVelocity(metricName)) + (rndm.nextDouble() * ac1)
 						* (particle.getPBestLocation(metricName) - particle.getLocation(metricName)) + (rndm.nextDouble() * ac2)
 						* (bdLoc.get(metricName) - particle.getLocation(metricName));
-				System.out.println("Particle: " + j +" V = "+ newV);
+				//System.out.println("Particle: " + j +" V = "+ newV);
 				j++;
 				/*
 				 * if(newV > vmax) newV = vmax; if(newV < vmin) newV = vmin;

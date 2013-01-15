@@ -100,7 +100,10 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				AbstractAlgorithm algo = null;
-
+				//üste almak zorunda kaldim
+				
+				AbstractAlgorithm hcAlgorithm = null;
+				
 				if (e.getActionCommand().equals("HC")) {
 					int rc = (Integer) hcRestartCount.getValue();
 					int rd = (Integer) hcRestartDepth.getValue();
@@ -126,8 +129,6 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 							getRunConfig()), null, mt, pc, mi);
 				} else if (e.getActionCommand().equals("PS")) {
 					int mi = (Integer) psiteration.getValue();
-
-					AbstractAlgorithm hcAlgorithm = null;
 					if (selectparticalswarm.getSelectedItem().equals("Simple-HC"))
 						hcAlgorithm = new HillClimbingForPSO(null, null);
 					else if (selectparticalswarm.getSelectedItem().equals("Stochastic-HC"))
@@ -135,10 +136,13 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 					else if (selectparticalswarm.getSelectedItem().equals("FirsChoice-HC"))
 						hcAlgorithm = new FirstChoiceHCForPSO(null, null);		
 					
-					algo = new PSOAlgorithm(new SolutionDesign(design, getRunConfig()), null, hcAlgorithm, mi);
+					//algo = new PSOAlgorithm(new SolutionDesign(design, getRunConfig()), null, hcAlgorithm, mi);
 				}
-
+				int mi = (Integer) psiteration.getValue();
+				//Böyle for yapinca threatli calisiyo :)  bi dene bak nolucak.. aklima bisi gelmedi su an ilk search
+				for(int i = 0; i<2; i++){
 				
+				algo = new PSOAlgorithm(new SolutionDesign(design, getRunConfig()), null, hcAlgorithm, mi);
 				RunPanel rp = new RunPanel(algo);
 
 				MainWindow
@@ -151,6 +155,8 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 								rp, null);
 
 				MainWindow.getInstance().getTabs().setSelectedComponent(rp);
+				}
+				//bi serarhun bitmesini beklemesi lazim ama beklemiyo.. yine bakarim bu aksam ama pes ettim su an
 			}
 		};
 
