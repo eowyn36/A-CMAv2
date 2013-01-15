@@ -126,8 +126,6 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 							getRunConfig()), null, mt, pc, mi);
 				} else if (e.getActionCommand().equals("PS")) {
 					int mi = (Integer) psiteration.getValue();
-					int psvmax = (Integer) psVmax.getValue();
-					int psvmin = (Integer) psVmin.getValue();
 
 					AbstractAlgorithm hcAlgorithm = null;
 					if (selectparticalswarm.getSelectedItem().equals("Simple-HC"))
@@ -137,9 +135,10 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 					else if (selectparticalswarm.getSelectedItem().equals("FirsChoice-HC"))
 						hcAlgorithm = new FirstChoiceHCForPSO(null, null);		
 					
-					algo = new PSOAlgorithm(new SolutionDesign(design, getRunConfig()), null, psvmax, psvmin, hcAlgorithm, mi);
+					algo = new PSOAlgorithm(new SolutionDesign(design, getRunConfig()), null, hcAlgorithm, mi);
 				}
 
+				
 				RunPanel rp = new RunPanel(algo);
 
 				MainWindow

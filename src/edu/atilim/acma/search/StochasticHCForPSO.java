@@ -16,7 +16,7 @@ public class StochasticHCForPSO extends AbstractAlgorithm {
 
 	@Override
 	public String getName() {
-		return "Hill Climbing";
+		return "Stochastic Hill Climbing";
 	}
 	
 	@Override
@@ -72,7 +72,8 @@ public class StochasticHCForPSO extends AbstractAlgorithm {
 			observer.onExpansion(this, current.getAllActions().size());
 		}
 
-		if (closerNeighbor == current || getStepCount() > maxIters) {
+		// if (closerNeighbor == current || getStepCount() > maxIters ) {
+		if (closerNeighbor == current) {
 			log("Algorithm finished, the final design's distance to goal is: %.6f", best.getEuclidianDistance(goal));
 			finalDesign = best;
 			return true;

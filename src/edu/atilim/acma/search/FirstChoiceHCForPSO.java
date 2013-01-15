@@ -18,14 +18,14 @@ public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 	public String getName() {
 		return "First Choice Hill Climbing";
 	}
-	
+
 	@Override
 	public void setGoal(HashMap<String, Double> goal) {
 		this.goal = goal;
 	}
-	
+
 	@Override
-	public void setInitialDesign(SolutionDesign initialDesign){
+	public void setInitialDesign(SolutionDesign initialDesign) {
 		this.initialDesign = initialDesign;
 		current = best = initialDesign;
 	}
@@ -53,10 +53,11 @@ public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 	public boolean step() {
 		AlgorithmObserver observer = getObserver();
 
-		log("Starting iteration %d. Current distance: %.6f, Closest distance: %.6f", getStepCount(), current.getEuclidianDistance(goal), best.getEuclidianDistance(goal));
+		log("Starting iteration %d. Current distance: %.6f, Closest distance: %.6f", getStepCount(), current.getEuclidianDistance(goal),
+				best.getEuclidianDistance(goal));
 
 		SolutionDesign closerRandomNeighbor = current.getCloserRandomNeighbor(goal);
-		
+
 		log("Found neighbor with distance %.6f", closerRandomNeighbor.getEuclidianDistance(goal));
 
 		if (closerRandomNeighbor.isCloserThan(best, goal)) {
@@ -71,7 +72,8 @@ public class FirstChoiceHCForPSO extends AbstractAlgorithm {
 			observer.onExpansion(this, current.getAllActions().size());
 		}
 
-		if (closerRandomNeighbor == current || getStepCount() > maxIters ) {
+		// if (closerRandomNeighbor == current || getStepCount() > maxIters ) {
+		if (closerRandomNeighbor == current) {
 			log("Algorithm finished, the final design's distance to goal is: %.6f", best.getEuclidianDistance(goal));
 			finalDesign = best;
 			return true;

@@ -72,7 +72,7 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 	}
 
 	public HashMap<String, Double> getLocation() {
-		return MetricCalculator.getAverages((MetricCalculator.calculate(getDesign(), config)));
+		return MetricCalculator.normalizeEach((MetricCalculator.calculate(getDesign(), config)), config);
 	}
 
 	public Double getLocation(String metricName) {
@@ -81,11 +81,14 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 
 	public SolutionDesign getClosestNeighbor(HashMap<String, Double> goal) {
 		SolutionDesign best = this;
+		Double bestDistance = best.getEuclidianDistance(goal);
 
 		if (numProcs == 1) {
 			for (SolutionDesign sd : this) {
-				if (sd.isCloserThan(best, goal))
+				if (sd.isCloserThan(bestDistance, goal)) {
 					best = sd;
+					bestDistance = best.getEuclidianDistance(goal);
+				}
 			}
 			return best;
 		}
@@ -124,30 +127,59 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 		return best;
 	}
 
-	public Boolean isCloserThan(SolutionDesign best, HashMap<String, Double> goal) {
-		if ((Double.compare(best.getEuclidianDistance(goal), getEuclidianDistance(goal))) > 0)
+	public Boolean isCloserThan(Double bestDistance, HashMap<String, Double> goal) {
+		if ((Double.compare(bestDistance, getEuclidianDistance(goal))) > 0)
 			return true;
 		return false;
 	}
 
 	// For Stochastic Hill Climbing
 	public SolutionDesign getCloserNeighbor(HashMap<String, Double> goal) {
-		
-		//TODO threat
-		
 		SolutionDesign best = this;
 
 		HashMap<SolutionDesign, Double> closerDesigns = new HashMap<SolutionDesign, Double>();
 		Double sumOfDistances = 0.0;
 		double currentDistance = this.getEuclidianDistance(goal);
 
-		for (SolutionDesign sd : this) {
-			if (sd.isCloserThan(this, goal)) {
-				closerDesigns.put(sd, currentDistance - sd.getEuclidianDistance(goal));
-				sumOfDistances += currentDistance - sd.getEuclidianDistance(goal);
+		if (numProcs == 1) {
+			for (SolutionDesign sd : this) {
+				if (sd.isCloserThan(currentDistance, goal)) {
+					closerDesigns.put(sd, currentDistance - sd.getEuclidianDistance(goal));
+					sumOfDistances += currentDistance - sd.getEuclidianDistance(goal);
+				}
+			}
+		} else {
+			List<Action> actions = getAllActions();
+
+			int perthread = actions.size() / numProcs;
+
+			List<CloserDesignFinder> cdf = new ArrayList<SolutionDesign.CloserDesignFinder>(numProcs);
+			for (int i = 0; i < numProcs; i++) {
+				cdf.add(new CloserDesignFinder(closerDesigns, actions, i * perthread, perthread, goal));
+			}
+
+			try {
+				// Submit to thread pool
+				List<Future<Double>> futures = ACMAUtil.threadPool.invokeAll(cdf);
+
+				// Remainder
+				for (int i = perthread * numProcs; i < actions.size(); i++) {
+					SolutionDesign cur = apply(actions.get(i));
+					if (cur.isCloserThan(currentDistance, goal))
+						closerDesigns.put(cur, currentDistance - cur.getEuclidianDistance(goal));
+					sumOfDistances += currentDistance - cur.getEuclidianDistance(goal);
+				}
+
+				for (Future<Double> f : futures) {
+					Double tempSum = f.get();
+					sumOfDistances += tempSum;
+				}
+			} catch (Exception e) {
+				Log.severe("Exception in parallel design extraction: %s", e.getMessage());
+				e.printStackTrace();
+				return this;
 			}
 		}
-
 		double randomnumber = new Random().nextDouble() * sumOfDistances;
 		double total = 0.0;
 
@@ -165,27 +197,27 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 		int rndmNo;
 		List<Action> actions = getAllActions();
 		SolutionDesign randomNeighbor;
-		
-		while(!actions.isEmpty()){
+
+		while (!actions.isEmpty()) {
 			rndmNo = ACMAUtil.RANDOM.nextInt(actions.size());
 			randomNeighbor = apply(actions.get(rndmNo));
 			actions.remove(rndmNo);
 			if (randomNeighbor.getEuclidianDistance(goal) < this.getEuclidianDistance(goal))
 				return closerRandomNeighbor = randomNeighbor;
 		}
-	
+
 		return closerRandomNeighbor;
 	}
 
 	public double getEuclidianDistance(HashMap<String, Double> goal) {
 
+		HashMap<String, Double> loc = getLocation();
 		List<MetricRegistry.Entry> metrics = MetricRegistry.entries();
-		HashMap<String, Double> averages = getLocation();
 		double sum = 0;
 
-		for (MetricRegistry.Entry entry : metrics) {
-			sum += Math.pow((averages.get(entry.getName()) - goal.get(entry.getName())), 2);
-		}
+		for (MetricRegistry.Entry entry : metrics)
+			sum += Math.pow((loc.get(entry.getName()) - goal.get(entry.getName())), 2);
+
 		return Math.sqrt(sum);
 	}
 
@@ -348,8 +380,7 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 
 	}
 
-	// BestDesignFinder'dan sadece bi kac satiri farkli belki BestDesignFinder'i
-	// kullanmanin bi yolunu bulabiliriz ?
+	// Used in Hill Climbing for PSO
 	private class ClosestDesignFinder implements Callable<SolutionDesign> {
 		private List<Action> actions;
 		private int offset;
@@ -366,14 +397,50 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 		@Override
 		public SolutionDesign call() throws Exception {
 			SolutionDesign best = SolutionDesign.this;
+			Double bestDistance = best.getEuclidianDistance(goal);
 			for (int i = offset; i < offset + count; i++) {
 				Action action = actions.get(i);
 				SolutionDesign newDesign = apply(action);
-				if (newDesign.isCloserThan(best, goal))
+				if (newDesign.isCloserThan(bestDistance, goal)){
 					best = newDesign;
+					bestDistance = best.getEuclidianDistance(goal);
+				}
 			}
 
 			return best;
+		}
+
+	}
+
+	// Used in Stochastic Hill Climbing for PSO
+	private class CloserDesignFinder implements Callable<Double> {
+		HashMap<SolutionDesign, Double> closerDesigns;
+		private List<Action> actions;
+		private int offset;
+		private int count;
+		HashMap<String, Double> goal;
+
+		private CloserDesignFinder(HashMap<SolutionDesign, Double> closerDesigns, List<Action> actions, int offset, int count,
+				HashMap<String, Double> goal) {
+			this.closerDesigns = closerDesigns;
+			this.actions = actions;
+			this.offset = offset;
+			this.count = count;
+			this.goal = goal;
+		}
+
+		@Override
+		public Double call() throws Exception {
+			Double currentDistance = SolutionDesign.this.getEuclidianDistance(goal);
+			Double sumOfDistances = 0.0;
+			for (int i = offset; i < offset + count; i++) {
+				SolutionDesign newDesign = apply(actions.get(i));
+				if (newDesign.isCloserThan(currentDistance, goal))
+					closerDesigns.put(newDesign, currentDistance - newDesign.getEuclidianDistance(goal));
+				sumOfDistances += currentDistance - newDesign.getEuclidianDistance(goal);
+			}
+
+			return sumOfDistances;
 		}
 
 	}
