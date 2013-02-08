@@ -21,6 +21,10 @@ public abstract class AbstractAlgorithm {
 	public int getState() {
 		return state;
 	}
+	
+	public SolutionDesign getFinalDesign(){
+		return finalDesign;
+	}
 
 	public AbstractAlgorithm(SolutionDesign initialDesign) {
 		this(initialDesign, null);

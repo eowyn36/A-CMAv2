@@ -136,90 +136,123 @@ public class DesignPanelBase extends JPanel {
 	protected JCheckBox abcParallel;
 	protected Component horizontalStrut_2;
 	/*******************************************************************************/
-	 protected JPanel particalswarmpanel;
-	 protected JLabel lbliteration;
-	 protected JSpinner psiteration;
-	 protected Component hs15;
-	
-	 protected JLabel lblAc1;
-	 protected JSpinner psAc1;
-	 protected Component hs16;
-	
-	 protected JLabel lblAc2;
-	 protected JSpinner psAc2;
-	 protected Component hs17;
-	
-	 protected JLabel lblVmax;
-	 protected JSpinner psVmax;
-	 protected Component hs18;
-	
-	 protected JLabel lblVmin;
-	 protected JSpinner psVmin;
-	 protected Component hs19;
-	
-	 protected JButton psbtnstart;
-	 protected JButton psbtnaddtask;
-	
-	 protected Component hg6;
-	 
-	 public JComboBox selectparticalswarm;
-	 
-	 protected Component hs20;
-	 
+	protected JPanel particalswarmpanel;
+	protected JLabel lbliteration;
+	protected JSpinner psiteration;
+	protected Component hs15;
+
+	protected JLabel lblAc1;
+	protected JSpinner psAc1;
+	protected Component hs16;
+
+	protected JLabel lblAc2;
+	protected JSpinner psAc2;
+	protected Component hs17;
+
+	protected JLabel lblVmax;
+	protected JSpinner psVmax;
+	protected Component hs18;
+
+	protected JLabel lblVmin;
+	protected JSpinner psVmin;
+	protected Component hs19;
+
+	protected JButton psbtnstart;
+	protected JButton psbtnaddtask;
+
+	protected Component hg6;
+
+	public JComboBox selectparticalswarm;
+
+	protected Component hs20;
+
+	protected JLabel lbSwarmSize;
+	protected JSpinner psSwarmSize;
+	protected Component hs21;
+
+	protected JLabel lbW;
+	protected JSpinner psW;
+	protected Component hs22;
+
 	/*******************************************************************************/
 	public DesignPanelBase() {
 		setOpaque(false);
 		setLayout(new BorderLayout(0, 0));
-		
+
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		add(tabbedPane);
-		
+
 		metricsPanel = new JPanel();
 		metricsPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		metricsPanel.setOpaque(false);
-		tabbedPane.addTab("Metrics", new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/statistics2_16.png")), metricsPanel, null);
-		
+		tabbedPane.addTab(
+				"Metrics",
+				new ImageIcon(DesignPanelBase.class
+						.getResource("/resources/icons/statistics2_16.png")),
+				metricsPanel, null);
+
 		scrollPane = new JScrollPane();
 		scrollPane.setOpaque(false);
-		
+
 		metricTable = new JTable();
 		metricTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		metricTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		scrollPane.setViewportView(metricTable);
-		
+
 		chartPanel = new JPanel();
-		chartPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		chartPanel
+				.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		chartPanel.setOpaque(false);
-		
+
 		infoPanel = new JPanel();
-		infoPanel.setBorder(new CompoundBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Information", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(5, 5, 5, 5)));
+		infoPanel.setBorder(new CompoundBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "Information",
+				TitledBorder.LEADING, TitledBorder.TOP, null,
+				new Color(0, 0, 0)), new EmptyBorder(5, 5, 5, 5)));
 		infoPanel.setOpaque(false);
 		GroupLayout gl_metricsPanel = new GroupLayout(metricsPanel);
-		gl_metricsPanel.setHorizontalGroup(
-			gl_metricsPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, gl_metricsPanel.createSequentialGroup()
-					.addComponent(chartPanel, GroupLayout.DEFAULT_SIZE, 643, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(infoPanel, GroupLayout.PREFERRED_SIZE, 198, GroupLayout.PREFERRED_SIZE))
-				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 847, Short.MAX_VALUE)
-		);
-		gl_metricsPanel.setVerticalGroup(
-			gl_metricsPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_metricsPanel.createSequentialGroup()
-					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_metricsPanel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(infoPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(chartPanel, GroupLayout.DEFAULT_SIZE, 190, Short.MAX_VALUE)))
-		);
+		gl_metricsPanel.setHorizontalGroup(gl_metricsPanel
+				.createParallelGroup(Alignment.LEADING)
+				.addGroup(
+						Alignment.TRAILING,
+						gl_metricsPanel
+								.createSequentialGroup()
+								.addComponent(chartPanel,
+										GroupLayout.DEFAULT_SIZE, 643,
+										Short.MAX_VALUE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(infoPanel,
+										GroupLayout.PREFERRED_SIZE, 198,
+										GroupLayout.PREFERRED_SIZE))
+				.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 847,
+						Short.MAX_VALUE));
+		gl_metricsPanel.setVerticalGroup(gl_metricsPanel.createParallelGroup(
+				Alignment.TRAILING).addGroup(
+				gl_metricsPanel
+						.createSequentialGroup()
+						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE,
+								364, Short.MAX_VALUE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(
+								gl_metricsPanel
+										.createParallelGroup(
+												Alignment.TRAILING, false)
+										.addComponent(infoPanel,
+												GroupLayout.DEFAULT_SIZE,
+												GroupLayout.DEFAULT_SIZE,
+												Short.MAX_VALUE)
+										.addComponent(chartPanel,
+												GroupLayout.DEFAULT_SIZE, 190,
+												Short.MAX_VALUE))));
 		GridBagLayout gbl_infoPanel = new GridBagLayout();
-		gbl_infoPanel.columnWidths = new int[]{88, 88, 0};
-		gbl_infoPanel.rowHeights = new int[]{25, 25, 25, 25, 25, 25, 25, 0};
-		gbl_infoPanel.columnWeights = new double[]{0.0, 0.0, Double.MIN_VALUE};
-		gbl_infoPanel.rowWeights = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE};
+		gbl_infoPanel.columnWidths = new int[] { 88, 88, 0 };
+		gbl_infoPanel.rowHeights = new int[] { 25, 25, 25, 25, 25, 25, 25, 0 };
+		gbl_infoPanel.columnWeights = new double[] { 0.0, 0.0, Double.MIN_VALUE };
+		gbl_infoPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
+				0.0, Double.MIN_VALUE };
 		infoPanel.setLayout(gbl_infoPanel);
-		
+
 		lblNumberOfMetrics = new JLabel("# Metrics:");
 		GridBagConstraints gbc_lblNumberOfMetrics = new GridBagConstraints();
 		gbc_lblNumberOfMetrics.fill = GridBagConstraints.BOTH;
@@ -227,7 +260,7 @@ public class DesignPanelBase extends JPanel {
 		gbc_lblNumberOfMetrics.gridx = 0;
 		gbc_lblNumberOfMetrics.gridy = 0;
 		infoPanel.add(lblNumberOfMetrics, gbc_lblNumberOfMetrics);
-		
+
 		lblValNumMetrics = new JLabel("");
 		lblValNumMetrics.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblValNumMetrics = new GridBagConstraints();
@@ -236,7 +269,7 @@ public class DesignPanelBase extends JPanel {
 		gbc_lblValNumMetrics.gridx = 1;
 		gbc_lblValNumMetrics.gridy = 0;
 		infoPanel.add(lblValNumMetrics, gbc_lblValNumMetrics);
-		
+
 		lblItems = new JLabel("# Items:");
 		GridBagConstraints gbc_lblItems = new GridBagConstraints();
 		gbc_lblItems.fill = GridBagConstraints.BOTH;
@@ -244,7 +277,7 @@ public class DesignPanelBase extends JPanel {
 		gbc_lblItems.gridx = 0;
 		gbc_lblItems.gridy = 1;
 		infoPanel.add(lblItems, gbc_lblItems);
-		
+
 		lblValNumItems = new JLabel("");
 		lblValNumItems.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblValNumItems = new GridBagConstraints();
@@ -253,7 +286,7 @@ public class DesignPanelBase extends JPanel {
 		gbc_lblValNumItems.gridx = 1;
 		gbc_lblValNumItems.gridy = 1;
 		infoPanel.add(lblValNumItems, gbc_lblValNumItems);
-		
+
 		lblScore = new JLabel("<html><b>Score:</b></html>");
 		GridBagConstraints gbc_lblScore = new GridBagConstraints();
 		gbc_lblScore.fill = GridBagConstraints.BOTH;
@@ -261,7 +294,7 @@ public class DesignPanelBase extends JPanel {
 		gbc_lblScore.gridx = 0;
 		gbc_lblScore.gridy = 3;
 		infoPanel.add(lblScore, gbc_lblScore);
-		
+
 		lblValWeightedSum = new JLabel("");
 		lblValWeightedSum.setHorizontalAlignment(SwingConstants.RIGHT);
 		GridBagConstraints gbc_lblValWeightedSum = new GridBagConstraints();
@@ -270,19 +303,21 @@ public class DesignPanelBase extends JPanel {
 		gbc_lblValWeightedSum.gridx = 1;
 		gbc_lblValWeightedSum.gridy = 3;
 		infoPanel.add(lblValWeightedSum, gbc_lblValWeightedSum);
-		
+
 		btnSave = new JButton("Save CSV");
 		btnSave.setActionCommand(Actions.SAVE_METRICS);
-		btnSave.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/save_16.png")));
+		btnSave.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/save_16.png")));
 		GridBagConstraints gbc_btnSave = new GridBagConstraints();
 		gbc_btnSave.gridwidth = 2;
 		gbc_btnSave.fill = GridBagConstraints.BOTH;
 		gbc_btnSave.gridx = 0;
 		gbc_btnSave.gridy = 5;
 		infoPanel.add(btnSave, gbc_btnSave);
-		
+
 		btnPreset = new JButton("Add to Normalization List");
-		btnPreset.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/add.png")));
+		btnPreset.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/add.png")));
 		GridBagConstraints gbc_btnPreset = new GridBagConstraints();
 		gbc_btnPreset.gridwidth = 2;
 		gbc_btnPreset.fill = GridBagConstraints.BOTH;
@@ -291,382 +326,451 @@ public class DesignPanelBase extends JPanel {
 		infoPanel.add(btnPreset, gbc_btnPreset);
 		chartPanel.setLayout(new BorderLayout(0, 0));
 		metricsPanel.setLayout(gl_metricsPanel);
-		
+
 		actionsPanel = new JPanel();
 		actionsPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		actionsPanel.setOpaque(false);
-		tabbedPane.addTab("Refactor", new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/misc3_16.png")), actionsPanel, null);
-		
+		tabbedPane.addTab(
+				"Refactor",
+				new ImageIcon(DesignPanelBase.class
+						.getResource("/resources/icons/misc3_16.png")),
+				actionsPanel, null);
+
 		posActionsPanel = new JPanel();
-		posActionsPanel.setBorder(new CompoundBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Possible Actions", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(5, 5, 5, 5)));
+		posActionsPanel.setBorder(new CompoundBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "Possible Actions",
+				TitledBorder.LEADING, TitledBorder.TOP, null,
+				new Color(0, 0, 0)), new EmptyBorder(5, 5, 5, 5)));
 		posActionsPanel.setOpaque(false);
-		
+
 		algorithmsPanel = new JPanel();
 		algorithmsPanel.setOpaque(false);
-		algorithmsPanel.setBorder(new CompoundBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Initiate Search", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), new EmptyBorder(5, 5, 5, 5)));
-		
+		algorithmsPanel.setBorder(new CompoundBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "Initiate Search",
+				TitledBorder.LEADING, TitledBorder.TOP, null,
+				new Color(0, 0, 0)), new EmptyBorder(5, 5, 5, 5)));
+
 		algorithmsTabPane = new JTabbedPane(JTabbedPane.TOP);
 		GroupLayout gl_algorithmsPanel = new GroupLayout(algorithmsPanel);
-		gl_algorithmsPanel.setHorizontalGroup(
-			gl_algorithmsPanel.createParallelGroup(Alignment.LEADING)
-				.addComponent(algorithmsTabPane, GroupLayout.DEFAULT_SIZE, 825, Short.MAX_VALUE)
-		);
-		gl_algorithmsPanel.setVerticalGroup(
-			gl_algorithmsPanel.createParallelGroup(Alignment.LEADING)
-				.addComponent(algorithmsTabPane, GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
-		);
-		
+		gl_algorithmsPanel.setHorizontalGroup(gl_algorithmsPanel
+				.createParallelGroup(Alignment.LEADING).addComponent(
+						algorithmsTabPane, GroupLayout.DEFAULT_SIZE, 825,
+						Short.MAX_VALUE));
+		gl_algorithmsPanel.setVerticalGroup(gl_algorithmsPanel
+				.createParallelGroup(Alignment.LEADING).addComponent(
+						algorithmsTabPane, GroupLayout.DEFAULT_SIZE, 74,
+						Short.MAX_VALUE));
+
 		hillClimbingPanel = new JPanel();
-		hillClimbingPanel.setBorder(new EmptyBorder(5, 5, 5, 5));							//Yanlardan boþluk býrakýyor
-		hillClimbingPanel.setOpaque(false);													//Arka rengi beyaz yapýyor
-		algorithmsTabPane.addTab("Hill Climbing", null, hillClimbingPanel, null);			//Tab'ý oluþturuyor
-		hillClimbingPanel.setLayout(new BoxLayout(hillClimbingPanel, BoxLayout.X_AXIS));	//Düzeni bozuyor.Hepsini ortalýyor
-		
-		lblRestartCount = new JLabel("Restart Count:");										//restart count label'ý ismi
-		hillClimbingPanel.add(lblRestartCount);												//restart count label'ý	koyuyor
-		
-		hs1 = Box.createHorizontalStrut(5);													//deðerini 5 veriyor
-		hillClimbingPanel.add(hs1);															//deðeri ekliyor	
-		
+		hillClimbingPanel.setBorder(new EmptyBorder(5, 5, 5, 5)); // Yanlardan
+																	// boþluk
+																	// býrakýyor
+		hillClimbingPanel.setOpaque(false); // Arka rengi beyaz yapýyor
+		algorithmsTabPane
+				.addTab("Hill Climbing", null, hillClimbingPanel, null); // Tab'ý
+																			// oluþturuyor
+		hillClimbingPanel.setLayout(new BoxLayout(hillClimbingPanel,
+				BoxLayout.X_AXIS)); // Düzeni bozuyor.Hepsini ortalýyor
+
+		lblRestartCount = new JLabel("Restart Count:"); // restart count label'ý
+														// ismi
+		hillClimbingPanel.add(lblRestartCount); // restart count label'ý koyuyor
+
+		hs1 = Box.createHorizontalStrut(5); // deðerini 5 veriyor
+		hillClimbingPanel.add(hs1); // deðeri ekliyor
+
 		hcRestartCount = new JSpinner();
 		hcRestartCount.setModel(new SpinnerNumberModel(5, -1, 100, 1));
 		hillClimbingPanel.add(hcRestartCount);
-		
+
 		hs2 = Box.createHorizontalStrut(20);
 		hillClimbingPanel.add(hs2);
-		
+
 		lblRestartDepth = new JLabel("Restart Depth:");
 		hillClimbingPanel.add(lblRestartDepth);
-		
+
 		hs3 = Box.createHorizontalStrut(5);
 		hillClimbingPanel.add(hs3);
-		
+
 		hcRestartDepth = new JSpinner();
 		hcRestartDepth.setModel(new SpinnerNumberModel(20, 0, 1000, 1));
 		hillClimbingPanel.add(hcRestartDepth);
-		
+
 		hg1 = Box.createHorizontalGlue();
 		hillClimbingPanel.add(hg1);
-		
+
 		hcBtnStart = new JButton("Start");
 		hcBtnStart.setActionCommand("HC");
-		hcBtnStart.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/next_16.png")));
+		hcBtnStart.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/next_16.png")));
 		hillClimbingPanel.add(hcBtnStart);
-		
+
 		hcBtnAddTask = new JButton("Add Task");
 		hcBtnAddTask.setActionCommand("HC");
-		hcBtnAddTask.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/save_16.png")));
+		hcBtnAddTask.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/save_16.png")));
 		hillClimbingPanel.add(hcBtnAddTask);
-		
+
 		simAnnPanel = new JPanel();
 		simAnnPanel.setOpaque(false);
 		simAnnPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		algorithmsTabPane.addTab("Simulated Annealing", null, simAnnPanel, null);
+		algorithmsTabPane
+				.addTab("Simulated Annealing", null, simAnnPanel, null);
 		simAnnPanel.setLayout(new BoxLayout(simAnnPanel, BoxLayout.X_AXIS));
-		
+
 		lblIterationCount = new JLabel("Iteration Count:");
 		simAnnPanel.add(lblIterationCount);
-		
+
 		hs4 = Box.createHorizontalStrut(5);
 		simAnnPanel.add(hs4);
-		
+
 		saIterationCnt = new JSpinner();
-		saIterationCnt.setModel(new SpinnerNumberModel(5000, 100, 1000000, 250));
+		saIterationCnt
+				.setModel(new SpinnerNumberModel(5000, 100, 1000000, 250));
 		simAnnPanel.add(saIterationCnt);
-		
+
 		hg2 = Box.createHorizontalGlue();
 		simAnnPanel.add(hg2);
-		
+
 		saBtnStart = new JButton("Start");
 		saBtnStart.setActionCommand("SA");
-		saBtnStart.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/next_16.png")));
+		saBtnStart.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/next_16.png")));
 		simAnnPanel.add(saBtnStart);
-		
+
 		saBtnAddTask = new JButton("Add Task");
-		saBtnAddTask.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/save_16.png")));
+		saBtnAddTask.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/save_16.png")));
 		saBtnAddTask.setActionCommand("SA");
 		simAnnPanel.add(saBtnAddTask);
-		
+
 		beamSearchPanel = new JPanel();
 		beamSearchPanel.setOpaque(false);
 		beamSearchPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		algorithmsTabPane.addTab("Beam Search", null, beamSearchPanel, null);
-		beamSearchPanel.setLayout(new BoxLayout(beamSearchPanel, BoxLayout.X_AXIS));
-		
+		beamSearchPanel.setLayout(new BoxLayout(beamSearchPanel,
+				BoxLayout.X_AXIS));
+
 		bsIsStochastic = new JCheckBox("S");
 		bsIsStochastic.setOpaque(false);
 		beamSearchPanel.add(bsIsStochastic);
-		
+
 		hs100 = Box.createHorizontalStrut(5);
 		beamSearchPanel.add(hs100);
-		
+
 		lblBeamLength = new JLabel("Beam:");
 		beamSearchPanel.add(lblBeamLength);
-		
+
 		hs5 = Box.createHorizontalStrut(5);
 		beamSearchPanel.add(hs5);
-		
+
 		bsBeamLength = new JSpinner();
 		bsBeamLength.setModel(new SpinnerNumberModel(50, 1, 1000, 1));
 		beamSearchPanel.add(bsBeamLength);
-		
+
 		hs7 = Box.createHorizontalStrut(5);
 		beamSearchPanel.add(hs7);
-		
+
 		lblRandomizationDepth = new JLabel("Depth:");
 		beamSearchPanel.add(lblRandomizationDepth);
-		
+
 		hs9 = Box.createHorizontalStrut(5);
 		beamSearchPanel.add(hs9);
-		
+
 		bsRandomDepth = new JSpinner();
 		bsRandomDepth.setModel(new SpinnerNumberModel(100, 10, 2000, 1));
 		beamSearchPanel.add(bsRandomDepth);
-		
+
 		hs8 = Box.createHorizontalStrut(5);
 		beamSearchPanel.add(hs8);
-		
+
 		lblIterations = new JLabel("Iterations:");
 		beamSearchPanel.add(lblIterations);
-		
+
 		horizontalStrut_1 = Box.createHorizontalStrut(5);
 		beamSearchPanel.add(horizontalStrut_1);
-		
+
 		bsIterations = new JSpinner();
 		bsIterations.setModel(new SpinnerNumberModel(500, 5, 1000000, 1));
 		beamSearchPanel.add(bsIterations);
-		
+
 		hg3 = Box.createHorizontalGlue();
 		beamSearchPanel.add(hg3);
-		
+
 		bsBtnAddTask = new JButton("Add Task");
-		bsBtnAddTask.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/save_16.png")));
+		bsBtnAddTask.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/save_16.png")));
 		bsBtnAddTask.setActionCommand("BS");
 		beamSearchPanel.add(bsBtnAddTask);
-		
+
 		randomSearchPanel = new JPanel();
 		randomSearchPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		randomSearchPanel.setOpaque(false);
-		algorithmsTabPane.addTab("Random Search", null, randomSearchPanel, null);
-		randomSearchPanel.setLayout(new BoxLayout(randomSearchPanel, BoxLayout.X_AXIS));
-		
+		algorithmsTabPane
+				.addTab("Random Search", null, randomSearchPanel, null);
+		randomSearchPanel.setLayout(new BoxLayout(randomSearchPanel,
+				BoxLayout.X_AXIS));
+
 		lblIterationCount_rnd = new JLabel("Iteration Count:");
 		randomSearchPanel.add(lblIterationCount_rnd);
-		
+
 		hs6 = Box.createHorizontalStrut(5);
 		randomSearchPanel.add(hs6);
-		
+
 		rsIterationCount = new JSpinner();
-		rsIterationCount.setModel(new SpinnerNumberModel(1000, 0, 1000000000, 1));
+		rsIterationCount
+				.setModel(new SpinnerNumberModel(1000, 0, 1000000000, 1));
 		randomSearchPanel.add(rsIterationCount);
-		
+
 		horizontalGlue = Box.createHorizontalGlue();
 		randomSearchPanel.add(horizontalGlue);
-		
+
 		rsBtnStart = new JButton("Start");
 		rsBtnStart.setActionCommand("RS");
-		rsBtnStart.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/next_16.png")));
+		rsBtnStart.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/next_16.png")));
 		randomSearchPanel.add(rsBtnStart);
-		
+
 		rsBtnAddTask = new JButton("Add Task");
-		rsBtnAddTask.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/save_16.png")));
+		rsBtnAddTask.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/save_16.png")));
 		rsBtnAddTask.setActionCommand("RS");
 		randomSearchPanel.add(rsBtnAddTask);
-		
+
 		beeColonyPanel = new JPanel();
 		beeColonyPanel.setOpaque(false);
 		beeColonyPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		algorithmsTabPane.addTab("Artificial Bee Colony", null, beeColonyPanel, null);
-		beeColonyPanel.setLayout(new BoxLayout(beeColonyPanel, BoxLayout.X_AXIS));
-		
+		algorithmsTabPane.addTab("Artificial Bee Colony", null, beeColonyPanel,
+				null);
+		beeColonyPanel
+				.setLayout(new BoxLayout(beeColonyPanel, BoxLayout.X_AXIS));
+
 		abcParallel = new JCheckBox("P");
 		abcParallel.setOpaque(false);
 		beeColonyPanel.add(abcParallel);
-		
+
 		horizontalStrut_2 = Box.createHorizontalStrut(5);
 		beeColonyPanel.add(horizontalStrut_2);
-		
+
 		lblPopulationSize = new JLabel("Pop:");
 		beeColonyPanel.add(lblPopulationSize);
-		
+
 		hs10 = Box.createHorizontalStrut(5);
 		beeColonyPanel.add(hs10);
-		
+
 		abcPopSize = new JSpinner();
 		abcPopSize.setModel(new SpinnerNumberModel(70, 1, 5000, 1));
 		beeColonyPanel.add(abcPopSize);
-		
+
 		hs11 = Box.createHorizontalStrut(5);
 		beeColonyPanel.add(hs11);
-		
+
 		lblMaximumTrials = new JLabel("Trials:");
 		beeColonyPanel.add(lblMaximumTrials);
-		
+
 		hs12 = Box.createHorizontalStrut(5);
 		beeColonyPanel.add(hs12);
-		
+
 		abcMaxTrials = new JSpinner();
 		abcMaxTrials.setModel(new SpinnerNumberModel(50, 10, 500, 1));
 		beeColonyPanel.add(abcMaxTrials);
-		
+
 		hs13 = Box.createHorizontalStrut(5);
 		beeColonyPanel.add(hs13);
-		
+
 		lblIterations_1 = new JLabel("Iter:");
 		beeColonyPanel.add(lblIterations_1);
-		
+
 		hs14 = Box.createHorizontalStrut(5);
 		beeColonyPanel.add(hs14);
-		
+
 		abcIterations = new JSpinner();
 		abcIterations.setModel(new SpinnerNumberModel(5000, 10, 1000000, 1));
 		beeColonyPanel.add(abcIterations);
-		
+
 		horizontalGlue_1 = Box.createHorizontalGlue();
 		beeColonyPanel.add(horizontalGlue_1);
-		
+
 		abcBtnStart = new JButton("Start");
 		abcBtnStart.setActionCommand("ABC");
-		abcBtnStart.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/next_16.png")));
+		abcBtnStart.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/next_16.png")));
 		beeColonyPanel.add(abcBtnStart);
-		
+
 		abcBtnAddTask = new JButton("Add Task");
 		abcBtnAddTask.setActionCommand("ABC");
-		abcBtnAddTask.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/save_16.png")));
+		abcBtnAddTask.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/save_16.png")));
 		beeColonyPanel.add(abcBtnAddTask);
 		algorithmsPanel.setLayout(gl_algorithmsPanel);
 		actionsPanel.setLayout(new BorderLayout(0, 0));
-		
-/************************************************************************************************************/		
-		 particalswarmpanel = new JPanel();
-		 particalswarmpanel.setBorder(new EmptyBorder(5, 5, 5, 5));							//Yanlardan boþluk býrakýyor
-		 particalswarmpanel.setOpaque(false);													//Arka rengi beyaz yapýyor
-		 algorithmsTabPane.addTab("Particle Swarm", null, particalswarmpanel, null);			//Tab'ý oluþturuyor
-		 particalswarmpanel.setLayout(new BoxLayout(particalswarmpanel, BoxLayout.X_AXIS));	//Düzeni bozuyor.Hepsini ortalýyor	
-		
-	 	
-		 selectparticalswarm =new JComboBox();
-		 selectparticalswarm.setModel(new DefaultComboBoxModel(new String[] {"Simple-HC", "Stochastic-HC", "FirsChoice-HC"}));
-		 particalswarmpanel.add(selectparticalswarm);
-		 
-		 hs20 = Box.createHorizontalStrut(5);													
-		 particalswarmpanel.add(hs20);	
-		 
-		 lbliteration = new JLabel("Iteration:");										//restart count label'ý ismi
-		 particalswarmpanel.add(lbliteration);												//restart count label'ý	koyuyor
-		
-		 hs15 = Box.createHorizontalStrut(5);													
-		 particalswarmpanel.add(hs15);															
-		
-		 psiteration = new JSpinner();
-		 psiteration.setModel(new SpinnerNumberModel(50, -1, 100, 1));
-		 particalswarmpanel.add(psiteration);
-		
-		
-		
-		 lblAc1=new JLabel(" AC1:");
-		 particalswarmpanel.add(lblAc1);
-		
-		 hs16 = Box.createHorizontalStrut(5);													
-		 particalswarmpanel.add(hs16);	
-		
-		 psAc1 = new JSpinner();
-		 psAc1.setModel(new SpinnerNumberModel(2, -1, 100, 1));
-		 particalswarmpanel.add(psAc1);
 
-		
-		
-		 lblAc2=new JLabel(" AC2:");
-		 particalswarmpanel.add(lblAc2);
-		
-		 hs17 = Box.createHorizontalStrut(5);													
-		 particalswarmpanel.add(hs17);	
-		
-		 psAc2 = new JSpinner();
-		 psAc2.setModel(new SpinnerNumberModel(2, -1, 100, 1));
-		 particalswarmpanel.add(psAc2);
+		/************************************************************************************************************/
+		particalswarmpanel = new JPanel();
+		particalswarmpanel.setBorder(new EmptyBorder(5, 5, 5, 5)); // Yanlardan
+																	// boþluk
+																	// býrakýyor
+		particalswarmpanel.setOpaque(false); // Arka rengi beyaz yapýyor
+		algorithmsTabPane.addTab("Particle Swarm", null, particalswarmpanel,
+				null); // Tab'ý oluþturuyor
+		particalswarmpanel.setLayout(new BoxLayout(particalswarmpanel,
+				BoxLayout.X_AXIS)); // Düzeni bozuyor.Hepsini ortalýyor
 
-		
-		
-		 lblVmax=new JLabel(" Vmax:");
-		 particalswarmpanel.add(lblVmax);
-		
-		 hs18 = Box.createHorizontalStrut(5);													
-		 particalswarmpanel.add(hs18);	
-		
-		 psVmax = new JSpinner();
-		 psVmax.setModel(new SpinnerNumberModel(30, -1, 100, 1));
-		 particalswarmpanel.add(psVmax);		
+		selectparticalswarm = new JComboBox();
+		selectparticalswarm.setModel(new DefaultComboBoxModel(new String[] {
+				"Simple-HC", "Stochastic-HC", "FirsChoice-HC" }));
+		particalswarmpanel.add(selectparticalswarm);
 
-		
-		
-		 lblVmin=new JLabel(" Vmin:");
-		 particalswarmpanel.add(lblVmin);
-		
-		 hs19 = Box.createHorizontalStrut(5);													
-		 particalswarmpanel.add(hs19);	
-		
-		 psVmin = new JSpinner();
-		 psVmin.setModel(new SpinnerNumberModel(10, -1, 100, 1));
-		 particalswarmpanel.add(psVmin);		
-		
-		
-		 hg6 = Box.createHorizontalGlue();		//Boþluk oluþturuyor
-		 particalswarmpanel.add(hg6);           
-		
-		 
-		 
-	 	 psbtnstart = new JButton("Start");
-		 psbtnstart.setActionCommand("PS");
-		 psbtnstart.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/next_16.png")));
-		 particalswarmpanel.add(psbtnstart);
-		
-		 psbtnaddtask = new JButton("Add Task");
-		 psbtnaddtask.setActionCommand("PS");
-		 psbtnaddtask.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/save_16.png")));
-		 particalswarmpanel.add(psbtnaddtask);
-		
-		
-		
-		
-		
-/************************************************************************************************************/		
-		
-		
+		hs20 = Box.createHorizontalStrut(5);
+		particalswarmpanel.add(hs20);
+
+		lbliteration = new JLabel("Iteration:"); // restart count label'ý ismi
+		particalswarmpanel.add(lbliteration); // restart count label'ý koyuyor
+
+		hs15 = Box.createHorizontalStrut(5);
+		particalswarmpanel.add(hs15);
+
+		psiteration = new JSpinner();
+		psiteration.setModel(new SpinnerNumberModel(50, -1, 100, 1));
+		particalswarmpanel.add(psiteration);
+
+		hs21 = Box.createHorizontalStrut(5);
+		particalswarmpanel.add(hs21);
+
+		lbSwarmSize = new JLabel("SwarmSize:");
+		particalswarmpanel.add(lbSwarmSize);
+
+		hs22 = Box.createHorizontalStrut(5);
+		particalswarmpanel.add(hs22);
+
+		psSwarmSize = new JSpinner();
+		psSwarmSize.setModel(new SpinnerNumberModel(50, -1, 100, 1));
+		particalswarmpanel.add(psSwarmSize);
+
+		hs22 = Box.createHorizontalStrut(5);
+		particalswarmpanel.add(hs22);
+
+		lbW = new JLabel("W:");
+		particalswarmpanel.add(lbW);
+
+		hs22 = Box.createHorizontalStrut(5);
+		particalswarmpanel.add(hs22);
+
+		psW = new JSpinner();
+		psW.setModel(new SpinnerNumberModel(50, -1, 100, 1));
+		particalswarmpanel.add(psW);
+
+		lblAc1 = new JLabel(" AC1:");
+		particalswarmpanel.add(lblAc1);
+
+		hs16 = Box.createHorizontalStrut(5);
+		particalswarmpanel.add(hs16);
+
+		psAc1 = new JSpinner();
+		psAc1.setModel(new SpinnerNumberModel(2.5, -1, 100, 1));
+		particalswarmpanel.add(psAc1);
+
+		lblAc2 = new JLabel(" AC2:");
+		particalswarmpanel.add(lblAc2);
+
+		hs17 = Box.createHorizontalStrut(5);
+		particalswarmpanel.add(hs17);
+
+		psAc2 = new JSpinner();
+		psAc2.setModel(new SpinnerNumberModel(2.5, -1, 100, 1));
+		particalswarmpanel.add(psAc2);
+
+		lblVmax = new JLabel(" Vmax:");
+		particalswarmpanel.add(lblVmax);
+
+		hs18 = Box.createHorizontalStrut(5);
+		particalswarmpanel.add(hs18);
+
+		psVmax = new JSpinner();
+		psVmax.setModel(new SpinnerNumberModel(30, -1, 100, 1));
+		particalswarmpanel.add(psVmax);
+
+		lblVmin = new JLabel(" Vmin:");
+		particalswarmpanel.add(lblVmin);
+
+		hs19 = Box.createHorizontalStrut(5);
+		particalswarmpanel.add(hs19);
+
+		psVmin = new JSpinner();
+		psVmin.setModel(new SpinnerNumberModel(10, -1, 100, 1));
+		particalswarmpanel.add(psVmin);
+
+		hg6 = Box.createHorizontalGlue(); // Boþluk oluþturuyor
+		particalswarmpanel.add(hg6);
+
+		psbtnstart = new JButton("Start");
+		psbtnstart.setActionCommand("PS");
+		psbtnstart.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/next_16.png")));
+		particalswarmpanel.add(psbtnstart);
+
+		psbtnaddtask = new JButton("Add Task");
+		psbtnaddtask.setActionCommand("PS");
+		psbtnaddtask.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/save_16.png")));
+		particalswarmpanel.add(psbtnaddtask);
+
+		/************************************************************************************************************/
+
 		posActionsListPanel = new JPanel();
-		posActionsListPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
+		posActionsListPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED,
+				null, null));
 		posActionsListPanel.setOpaque(false);
-		
+
 		btnPosActionsRefresh = new JButton("");
-		btnPosActionsRefresh.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/refresh.png")));
-		
+		btnPosActionsRefresh.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/refresh.png")));
+
 		btnPosActionsChart = new JButton("");
-		btnPosActionsChart.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/statistics2_16.png")));
+		btnPosActionsChart.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/statistics2_16.png")));
 		GroupLayout gl_posActionsPanel = new GroupLayout(posActionsPanel);
-		gl_posActionsPanel.setHorizontalGroup(
-			gl_posActionsPanel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_posActionsPanel.createSequentialGroup()
-					.addComponent(posActionsListPanel, GroupLayout.DEFAULT_SIZE, 776, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_posActionsPanel.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnPosActionsChart, 0, 0, Short.MAX_VALUE)
-						.addComponent(btnPosActionsRefresh, GroupLayout.PREFERRED_SIZE, 42, Short.MAX_VALUE)))
-		);
-		gl_posActionsPanel.setVerticalGroup(
-			gl_posActionsPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_posActionsPanel.createSequentialGroup()
-					.addComponent(btnPosActionsRefresh)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnPosActionsChart)
-					.addContainerGap(147, Short.MAX_VALUE))
-				.addComponent(posActionsListPanel, GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE)
-		);
+		gl_posActionsPanel
+				.setHorizontalGroup(gl_posActionsPanel
+						.createParallelGroup(Alignment.TRAILING)
+						.addGroup(
+								gl_posActionsPanel
+										.createSequentialGroup()
+										.addComponent(posActionsListPanel,
+												GroupLayout.DEFAULT_SIZE, 776,
+												Short.MAX_VALUE)
+										.addPreferredGap(
+												ComponentPlacement.RELATED)
+										.addGroup(
+												gl_posActionsPanel
+														.createParallelGroup(
+																Alignment.TRAILING,
+																false)
+														.addComponent(
+																btnPosActionsChart,
+																0, 0,
+																Short.MAX_VALUE)
+														.addComponent(
+																btnPosActionsRefresh,
+																GroupLayout.PREFERRED_SIZE,
+																42,
+																Short.MAX_VALUE))));
+		gl_posActionsPanel.setVerticalGroup(gl_posActionsPanel
+				.createParallelGroup(Alignment.LEADING)
+				.addGroup(
+						gl_posActionsPanel.createSequentialGroup()
+								.addComponent(btnPosActionsRefresh)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(btnPosActionsChart)
+								.addContainerGap(147, Short.MAX_VALUE))
+				.addComponent(posActionsListPanel, GroupLayout.DEFAULT_SIZE,
+						136, Short.MAX_VALUE));
 		posActionsListPanel.setLayout(new BorderLayout(0, 0));
-		
+
 		postActionsListScroller = new JScrollPane();
 		postActionsListScroller.setBorder(null);
 		posActionsListPanel.add(postActionsListScroller);
-		
+
 		posActionsList = new JList();
 		posActionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		posActionsList.setCellRenderer(new PossibleActionsRenderer());
@@ -674,52 +778,65 @@ public class DesignPanelBase extends JPanel {
 		posActionsPanel.setLayout(gl_posActionsPanel);
 		actionsPanel.add(posActionsPanel, BorderLayout.CENTER);
 		actionsPanel.add(algorithmsPanel, BorderLayout.NORTH);
-		
+
 		appliedActionsPanel = new JPanel();
 		appliedActionsPanel.setOpaque(false);
-		tabbedPane.addTab("Applied Actions", new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/misc1_16.png")), appliedActionsPanel, null);
+		tabbedPane.addTab(
+				"Applied Actions",
+				new ImageIcon(DesignPanelBase.class
+						.getResource("/resources/icons/misc1_16.png")),
+				appliedActionsPanel, null);
 		appliedActionsPanel.setLayout(new BorderLayout(0, 0));
-		
+
 		appliedActionsButtonPanel = new JPanel();
 		appliedActionsButtonPanel.setOpaque(false);
 		appliedActionsPanel.add(appliedActionsButtonPanel, BorderLayout.EAST);
-		
+
 		appliedActionsRefreshButton = new JButton("");
-		appliedActionsRefreshButton.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/refresh.png")));
+		appliedActionsRefreshButton.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/refresh.png")));
 		appliedActionsButtonPanel.add(appliedActionsRefreshButton);
-		
+
 		appliedActionsScrollPanePanel = new JPanel();
 		appliedActionsScrollPanePanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-		appliedActionsPanel.add(appliedActionsScrollPanePanel, BorderLayout.CENTER);
+		appliedActionsPanel.add(appliedActionsScrollPanePanel,
+				BorderLayout.CENTER);
 		appliedActionsScrollPanePanel.setLayout(new BorderLayout(0, 0));
-		
+
 		appliedActionsScrollPane = new JScrollPane();
 		appliedActionsScrollPanePanel.add(appliedActionsScrollPane);
 		appliedActionsScrollPanePanel.setOpaque(false);
-		appliedActionsScrollPane.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		
+		appliedActionsScrollPane.setBorder(new EtchedBorder(
+				EtchedBorder.LOWERED, null, null));
+
 		appliedActionsList = new JList();
-		appliedActionsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		appliedActionsList
+				.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		appliedActionsList.setCellRenderer(new AppliedActionsRenderer());
 		appliedActionsScrollPane.setViewportView(appliedActionsList);
-		
+
 		configPanel = new JPanel();
 		configPanel.setOpaque(false);
-		configPanel.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 0, 5), new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Metric & Action Configuration", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0))));
+		configPanel.setBorder(new CompoundBorder(new EmptyBorder(5, 5, 0, 5),
+				new TitledBorder(UIManager.getBorder("TitledBorder.border"),
+						"Metric & Action Configuration", TitledBorder.LEADING,
+						TitledBorder.TOP, null, new Color(0, 0, 0))));
 		add(configPanel, BorderLayout.NORTH);
 		configPanel.setLayout(new BoxLayout(configPanel, BoxLayout.X_AXIS));
-		
+
 		runConfigBox = new JComboBox();
-		runConfigBox.setModel(new DefaultComboBoxModel(new String[] {"Default"}));
+		runConfigBox.setModel(new DefaultComboBoxModel(
+				new String[] { "Default" }));
 		configPanel.add(runConfigBox);
-		
+
 		horizontalStrut = Box.createHorizontalStrut(5);
 		configPanel.add(horizontalStrut);
-		
+
 		btnConfigure = new JButton("Configure");
-		btnConfigure.setIcon(new ImageIcon(DesignPanelBase.class.getResource("/resources/icons/engine_16.png")));
+		btnConfigure.setIcon(new ImageIcon(DesignPanelBase.class
+				.getResource("/resources/icons/engine_16.png")));
 		configPanel.add(btnConfigure);
-		
+
 		btnConfigure.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -727,39 +844,44 @@ public class DesignPanelBase extends JPanel {
 			}
 		});
 	}
-	
-	private static class PossibleActionsRenderer extends DefaultListCellRenderer {
+
+	private static class PossibleActionsRenderer extends
+			DefaultListCellRenderer {
 		private static final long serialVersionUID = 1L;
-		
-		private static final Icon actionIcon = new ImageIcon(PossibleActionsRenderer.class.getResource("/resources/icons/misc3_16.png"));
-		
+
+		private static final Icon actionIcon = new ImageIcon(
+				PossibleActionsRenderer.class
+						.getResource("/resources/icons/misc3_16.png"));
+
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value,
 				int index, boolean isSelected, boolean cellHasFocus) {
-			
+
 			super.getListCellRendererComponent(list, value, index, isSelected,
 					cellHasFocus);
-			
+
 			setIcon(actionIcon);
-			
+
 			return this;
 		}
 	}
-	
+
 	private static class AppliedActionsRenderer extends DefaultListCellRenderer {
 		private static final long serialVersionUID = 1L;
-		
-		private static final Icon actionIcon = new ImageIcon(AppliedActionsRenderer.class.getResource("/resources/icons/misc1_16.png"));
-		
+
+		private static final Icon actionIcon = new ImageIcon(
+				AppliedActionsRenderer.class
+						.getResource("/resources/icons/misc1_16.png"));
+
 		@Override
 		public Component getListCellRendererComponent(JList list, Object value,
 				int index, boolean isSelected, boolean cellHasFocus) {
-			
+
 			super.getListCellRendererComponent(list, value, index, isSelected,
 					cellHasFocus);
-			
+
 			setIcon(actionIcon);
-			
+
 			return this;
 		}
 	}

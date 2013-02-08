@@ -41,51 +41,36 @@ public class MetricCalculator {
 
 			if (m.isAnnotationPresent(TypeMetric.class)) {
 				if (paramTypes.length != 2)
-					throw new Exception(
-							"Metric calculator methods should accept two parameters.");
+					throw new Exception("Metric calculator methods should accept two parameters.");
 				if (paramTypes[0] != Type.class)
-					throw new Exception(
-							"Type metric calculator methods should accept a type parameter.");
+					throw new Exception("Type metric calculator methods should accept a type parameter.");
 				int type = 0;
 				if (paramTypes[1] == MetricTable.MetricRow.class)
 					type = METHOD_TYPE_ROW;
 				else if (paramTypes[1] == MetricTable.class)
 					type = METHOD_TYPE_TABLE;
 				else
-					throw new Exception(
-							"Type metric calculator methods should accept a MetricTable or MetricRow.");
+					throw new Exception("Type metric calculator methods should accept a MetricTable or MetricRow.");
 
 				methods.add(Pair.create(m, type));
 			}
 
 			if (m.isAnnotationPresent(PackageMetric.class)) {
 				if (paramTypes.length != 2)
-					throw new Exception(
-							"Metric calculator methods should accept two parameters.");
+					throw new Exception("Metric calculator methods should accept two parameters.");
 				if (paramTypes[0] != Package.class)
-					throw new Exception(
-							"Package metric calculator methods should accept a package parameter.");
+					throw new Exception("Package metric calculator methods should accept a package parameter.");
 				int type = 0;
 				if (paramTypes[1] == MetricTable.MetricRow.class)
 					type = METHOD_PACK_ROW;
 				else if (paramTypes[1] == MetricTable.class)
 					type = METHOD_PACK_TABLE;
 				else
-					throw new Exception(
-							"Package metric calculator methods should accept a MetricTable or MetricRow.");
+					throw new Exception("Package metric calculator methods should accept a MetricTable or MetricRow.");
 
 				methods.add(Pair.create(m, type));
 			}
 		}
-	}
-
-	public static HashMap<String, Double> getAverages(MetricTable table) {
-		HashMap<String, Double> averages = new HashMap<String, Double>();
-		List<MetricRegistry.Entry> metrics = MetricRegistry.entries();
-		for (MetricRegistry.Entry entry : metrics) {
-			averages.put(entry.getName(), table.getAverage(entry.getName()));
-		}
-		return averages;
 	}
 
 	public static double normalize(MetricTable table) {
@@ -96,12 +81,7 @@ public class MetricCalculator {
 		return MetricNormalizer.normalize(table.getSummary(), config);
 	}
 
-	public static HashMap<String, Double> normalizeEach(MetricTable table) {
-		return normalizeEach(table, RunConfig.getDefault());
-	}
-
-	public static HashMap<String, Double> normalizeEach(MetricTable table,
-			RunConfig config) {
+	public static HashMap<String, Double> normalizeEach(MetricTable table, RunConfig config) {
 		return MetricNormalizer.normalizeEach(table.getSummary(), config);
 	}
 
@@ -150,7 +130,6 @@ public class MetricCalculator {
 				}
 			}
 		}
-
 		return table;
 	}
 }

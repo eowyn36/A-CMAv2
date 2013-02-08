@@ -57,7 +57,7 @@ public class RunConfigDialog extends JDialog implements WindowListener {
 		buttonPanel.add(cancelButton);
 		
 		setLocationRelativeTo(MainWindow.getInstance());
-		System.out.println("config");
+
 		init();
 	}
 	

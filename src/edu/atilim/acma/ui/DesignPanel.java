@@ -50,6 +50,7 @@ import edu.atilim.acma.search.BeeColonyAlgorithm;
 import edu.atilim.acma.search.ConcurrentBeamSearch;
 import edu.atilim.acma.search.ConcurrentBeeColony;
 import edu.atilim.acma.search.ConcurrentHillClimbing;
+import edu.atilim.acma.search.ConcurrentPSOAlgorithm;
 import edu.atilim.acma.search.ConcurrentParallelBeeColony;
 import edu.atilim.acma.search.ConcurrentRandomSearch;
 import edu.atilim.acma.search.ConcurrentSimAnn;
@@ -99,10 +100,7 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 		ActionListener algoListener = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				AbstractAlgorithm algo = null;
-				//üste almak zorunda kaldim
-				
-				AbstractAlgorithm hcAlgorithm = null;
+				AbstractAlgorithm algo = null;			
 				
 				if (e.getActionCommand().equals("HC")) {
 					int rc = (Integer) hcRestartCount.getValue();
@@ -129,6 +127,8 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 							getRunConfig()), null, mt, pc, mi);
 				} else if (e.getActionCommand().equals("PS")) {
 					int mi = (Integer) psiteration.getValue();
+					AbstractAlgorithm hcAlgorithm = null;
+
 					if (selectparticalswarm.getSelectedItem().equals("Simple-HC"))
 						hcAlgorithm = new HillClimbingForPSO(null, null);
 					else if (selectparticalswarm.getSelectedItem().equals("Stochastic-HC"))
@@ -136,13 +136,9 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 					else if (selectparticalswarm.getSelectedItem().equals("FirsChoice-HC"))
 						hcAlgorithm = new FirstChoiceHCForPSO(null, null);		
 					
-					//algo = new PSOAlgorithm(new SolutionDesign(design, getRunConfig()), null, hcAlgorithm, mi);
+					algo = new PSOAlgorithm(new SolutionDesign(design, getRunConfig()), null, hcAlgorithm, mi);
 				}
-				int mi = (Integer) psiteration.getValue();
-				//Böyle for yapinca threatli calisiyo :)  bi dene bak nolucak.. aklima bisi gelmedi su an ilk search
-				for(int i = 0; i<2; i++){
 				
-				algo = new PSOAlgorithm(new SolutionDesign(design, getRunConfig()), null, hcAlgorithm, mi);
 				RunPanel rp = new RunPanel(algo);
 
 				MainWindow
@@ -155,8 +151,6 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 								rp, null);
 
 				MainWindow.getInstance().getTabs().setSelectedComponent(rp);
-				}
-				//bi searchun bitmesini beklemesi lazim ama beklemiyo.. yine bakarim bu aksam ama pes ettim su an
 			}
 		};
 
@@ -220,6 +214,24 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 					else
 						task = new ConcurrentBeeColony(name, getRunConfig(),
 								design, mt, pc, mi, runs);
+				}else if(e.getActionCommand().equals("PS")) {
+					
+					String AlgorithmName = (String) selectparticalswarm.getSelectedItem();
+					int iterationCount = (Integer) psiteration.getValue();
+					int swarmSize = (Integer) psSwarmSize.getValue();
+					Double ac1 = (Double) psAc1.getValue();
+					Double ac2 = (Double) psAc2.getValue();
+					int w = (Integer) psW.getValue();
+					
+					
+					//***************************************************   Lazým olursa Hýzlar
+					int Vmax = (Integer) psVmax.getValue();
+					int Vmin = (Integer) psVmin.getValue();
+					
+
+					task = new ConcurrentPSOAlgorithm(name, getRunConfig(),
+							design, runs, AlgorithmName, swarmSize, ac1, ac2,
+							w, iterationCount);
 				}
 
 				if (task != null)
@@ -438,26 +450,31 @@ public class DesignPanel extends DesignPanelBase implements WindowEventListener 
 	}
 
 	private void updateConfigSelector() {
+		System.out.println("update config selector");
 		boolean prevfound = false;
 		UUID previd = UUID.randomUUID();
 		Object prc = runConfigBox.getSelectedItem();
-		if (prc != null && prc instanceof RunConfig)
+		if (prc != null && prc instanceof RunConfig){
 			previd = ((RunConfig) prc).getId();
-
+			System.out.println("prc != null && prc instanceof RunConfig");		
+		}
 		runConfigBox.removeAllItems();
 
 		for (RunConfig rc : ConfigManager.runConfigs()) {
 			runConfigBox.addItem(rc);
-
+			System.out.println("Item added" + rc.getName());
 			if (rc.getId().equals(previd)) {
 				prevfound = true;
+				System.out.println("true");
 				prc = rc;
 			}
 		}
 
 		if (prevfound) {
+			System.out.println("prefound");
 			runConfigBox.setSelectedItem(prc);
 		} else {
+			System.out.println("not found");
 			runConfigBox.setSelectedIndex(0);
 		}
 	}

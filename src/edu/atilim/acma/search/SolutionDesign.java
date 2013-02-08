@@ -401,7 +401,7 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 			for (int i = offset; i < offset + count; i++) {
 				Action action = actions.get(i);
 				SolutionDesign newDesign = apply(action);
-				if (newDesign.isCloserThan(bestDistance, goal)){
+				if (newDesign.isCloserThan(bestDistance, goal)) {
 					best = newDesign;
 					bestDistance = best.getEuclidianDistance(goal);
 				}
@@ -420,8 +420,7 @@ public class SolutionDesign implements Iterable<SolutionDesign>, Comparable<Solu
 		private int count;
 		HashMap<String, Double> goal;
 
-		private CloserDesignFinder(HashMap<SolutionDesign, Double> closerDesigns, List<Action> actions, int offset, int count,
-				HashMap<String, Double> goal) {
+		private CloserDesignFinder(HashMap<SolutionDesign, Double> closerDesigns, List<Action> actions, int offset, int count, HashMap<String, Double> goal) {
 			this.closerDesigns = closerDesigns;
 			this.actions = actions;
 			this.offset = offset;

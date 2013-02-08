@@ -23,9 +23,9 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 	private AbstractAlgorithm hcAlgorithm;
 	private double vmin;
 	private double vmax;
-	private int iterations = 10;
+	private int iterationCount = 10;
 
-	private int swarmSize = 50;
+	private int swarmSize = 10;
 	private int randomDepth = 100;
 	private int w = 1;
 	private double ac1, ac2 = 20;
@@ -35,25 +35,27 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 	private SolutionDesign bestDesign;
 	private HashMap<String, Double> bdLoc;
 
-	public PSOAlgorithm(SolutionDesign initialDesign, AlgorithmObserver observer, AbstractAlgorithm hcAlgorithm, int iterations) {
+	public PSOAlgorithm(SolutionDesign initialDesign, AlgorithmObserver observer, AbstractAlgorithm hcAlgorithm, int iterationCount) {
 		super(initialDesign, observer);
 		//this.vmax = vmax;
 		//this.vmin = vmin;
 		this.hcAlgorithm = hcAlgorithm;
-		this.iterations = iterations;
+		this.iterationCount = iterationCount;
 		this.swarm = new HashSet<Particle>();
 		log("Initial Design Score:" + initialDesign.getScore());
 		generateInitialSwarm();
 	}
 //for testing
-	//burdaki contructora bütün degiþtiriceimiz degiþkenleri verelim design panelde pso yaratirken bu contructorla yaratiriz test icin
-	// W ekledim ben bi digerlerinide eklemek lazim..
-	public PSOAlgorithm(SolutionDesign initialDesign, AlgorithmObserver observer, AbstractAlgorithm hcAlgorithm, int iterations, int w) {
+	public PSOAlgorithm(SolutionDesign initialDesign, AlgorithmObserver observer, AbstractAlgorithm hcAlgorithm, int iterationCount, int swarmSize, Double ac1, Double ac2, int w) {
 		super(initialDesign, observer);
 		//this.vmax = vmax;
 		//this.vmin = vmin;
 		this.hcAlgorithm = hcAlgorithm;
-		this.iterations = iterations;
+		this.iterationCount = iterationCount;
+		this.swarmSize = swarmSize;
+		this.ac1 = ac1;
+		this.ac2 = ac2;
+		this.w = w;
 		this.swarm = new HashSet<Particle>();
 		log("Initial Design Score:" + initialDesign.getScore());
 		generateInitialSwarm();
@@ -110,7 +112,7 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 			}
 		}
 		log("Global best and Personel Bests are updated.");
-		if (getStepCount() > iterations) {
+		if (getStepCount() > iterationCount) {
 			finalDesign = bestDesign;
 			log("Algorithm finished, the final design score: %.6f", bestDesign.getScore());
 			return true;
@@ -122,7 +124,7 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 		Random rndm = new Random();
 		double newV;
 		String metricName;
-		int j = 1;
+
 		for (Particle particle : swarm) {
 			// double newVelX = (w * vx) + (r1 * C1) * (pBestX - lx) + (r2 * C2)
 			// * (gBestX - lx)
@@ -131,8 +133,6 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 				newV = (w * particle.getVelocity(metricName)) + (rndm.nextDouble() * ac1)
 						* (particle.getPBestLocation(metricName) - particle.getLocation(metricName)) + (rndm.nextDouble() * ac2)
 						* (bdLoc.get(metricName) - particle.getLocation(metricName));
-				//System.out.println("Particle: " + j +" V = "+ newV);
-				j++;
 				/*
 				 * if(newV > vmax) newV = vmax; if(newV < vmin) newV = vmin;
 				 */
@@ -154,9 +154,9 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 			hcAlgorithm.setGoal(goal);
 			hcAlgorithm.setInitialDesign(particle.getCurrentDesign());
 			hcAlgorithm.start(false);
-			log(hcAlgorithm.getName() + " for Particle " + i++ +"Before: "+ particle.getScore()+ ", After: "+ hcAlgorithm.finalDesign.getScore());
+			log(hcAlgorithm.getName() + " for Particle " + i++ +"Before: "+ particle.getScore()+ ", After: "+ hcAlgorithm.getFinalDesign().getScore());
 			
-			particle.setCurrentDesign(hcAlgorithm.finalDesign);
+			particle.setCurrentDesign(hcAlgorithm.getFinalDesign());
 		}
 		
 		log("Positions are updated.");
@@ -164,7 +164,7 @@ public class PSOAlgorithm extends AbstractAlgorithm {
 		log("Finished iteration %d. Best score: %.6f", getStepCount(), bestDesign.getScore());
 
 		if (observer != null) {
-			observer.onAdvance(this, getStepCount() + 1, iterations);
+			observer.onAdvance(this, getStepCount() + 1, iterationCount);
 		}
 		
 		return false;

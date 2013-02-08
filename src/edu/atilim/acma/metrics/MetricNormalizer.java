@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import edu.atilim.acma.RunConfig;
-import edu.atilim.acma.ui.ConfigManager;
 
 public class MetricNormalizer {
 	private static HashMap<UUID, double[][]> normalizationCache = new HashMap<UUID, double[][]>();
@@ -25,10 +24,7 @@ public class MetricNormalizer {
 
 		if (!normalizationCache.containsKey(config.getId())) {
 			// Design set
-
-			RunConfig defaultConfig = ConfigManager.runConfigs().get(0);
-
-			List<MetricSummary> designs = defaultConfig.getNormalMetrics();
+			List<MetricSummary> designs = config.getNormalMetrics();
 			int numdesigns = designs.size();
 
 			// Table
@@ -36,6 +32,7 @@ public class MetricNormalizer {
 
 			for (int i = 0; i < nummetrics; i++) {
 				MetricRegistry.Entry metric = metrics.get(i);
+
 				for (int j = 0; j < numdesigns; j++) {
 					MetricSummary design = designs.get(j);
 					table[i][j] = design.get(metric.getName());
@@ -52,18 +49,20 @@ public class MetricNormalizer {
 		for (int i = 0; i < nummetrics; i++) {
 			MetricRegistry.Entry metric = metrics.get(i);
 
-			if (!config.isMetricEnabled(metric.getName()))	continue;
+			if (!config.isMetricEnabled(metric.getName()))
+				continue;
 
 			double curmetric = current.get(metric.getName());
 
-			if (Double.isNaN(curmetric) || Double.isNaN(mn[i][0]) || Double.isNaN(mn[i][1])) continue;
+			if (Double.isNaN(curmetric) || Double.isNaN(mn[i][0]) || Double.isNaN(mn[i][1]))
+				continue;
 
 			double curnormal;
-			if(curmetric == 0.0 &&  mn[i][0] == 0.0 && mn[i][1] == 0.0)
+			if (curmetric == 0.0 && mn[i][0] == 0.0 && mn[i][1] == 0.0)
 				curnormal = 0.0;
 			else
 				curnormal = (curmetric - mn[i][0]) / mn[i][1];
-			
+
 			if (metric.isMinimized()) {
 				items.put(metric.getName(), Math.abs(curnormal - ((0.0 - mn[i][0]) / mn[i][1])));
 			} else {
